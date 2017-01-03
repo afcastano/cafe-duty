@@ -1,0 +1,1 @@
+stack exec cafe-duty
