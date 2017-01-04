@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
-module App.Repository (Person, Team, allPeople, findTeam, myTeam) where
+module App.Repository (Person, Team, allPeople, findTeam) where
 
 import Data.Aeson (FromJSON, ToJSON)
 import GHC.Generics
@@ -45,11 +45,8 @@ p2 = Person { name = "P2", active = True, timesOnDuty = 0 }
 allPeople :: [Person]
 allPeople = [bob, alice, eve, peter, p1, p2]
 
-myTeam :: Team
-myTeam = Team { teamName = "Robusta", members = allPeople }
-
 --- Data access function
-findTeam :: String -> IO (Either String Team)
+findTeam :: String -> IO (Maybe Team)
 findTeam name = findEntity "Team" name           
 
 saveTeam :: Team -> IO ()

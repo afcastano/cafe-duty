@@ -1,7 +1,7 @@
 module App.RosterGeneration (generateRoster) where
 import App.Helper.Lists
 
--- Roster generator algorithm
+-- Roster generator algorithm. Can be improved a lot!
 generateRoster :: [a] -> [(a,a)]
 generateRoster []   = []
 generateRoster list = let (l1, l2) = splitInHalf list

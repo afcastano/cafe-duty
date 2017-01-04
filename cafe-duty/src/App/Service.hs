@@ -3,8 +3,8 @@ module App.Service (Team, getTeam, currentDuty, nextDuty, allDuties) where
 import App.RosterGeneration
 import App.Repository
 
-getTeam :: String -> Team
-getTeam name = myTeam
+getTeam :: String -> IO (Maybe Team)
+getTeam name = findTeam name
 
 currentDuty :: (Person,Person)
 currentDuty = (generateRoster allPeople) !! 0
