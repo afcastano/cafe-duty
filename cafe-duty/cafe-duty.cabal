@@ -26,4 +26,5 @@ executable cafe-duty
   build-depends:       base >= 4.7 && < 5,
                        scotty,
                        aeson,
-                       bytestring
+                       bytestring,
+                       directory

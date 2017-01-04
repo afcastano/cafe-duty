@@ -50,4 +50,7 @@ myTeam = Team { teamName = "Robusta", members = allPeople }
 
 --- Data access function
 findTeam :: String -> IO (Either String Team)
-findTeam name = findEntity "Team" name                          
+findTeam name = findEntity "Team" name           
+
+saveTeam :: Team -> IO ()
+saveTeam team = saveEntity "Team" (teamName team) team
