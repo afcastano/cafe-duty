@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
-module App.Repository (Person, Team, members, findTeam) where
+module App.Repository (Person, Team(..), findTeam) where
 
 import Data.Aeson (FromJSON, ToJSON)
 import GHC.Generics
