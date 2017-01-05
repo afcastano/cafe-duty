@@ -3,18 +3,18 @@ module App.Service (fetchTeam, currentDuty, nextDuty, allDuties) where
 import App.RosterGeneration
 import App.Repository
 
-fetchTeam :: String -> IO (Maybe Team)
+fetchTeam :: String -> IO (Maybe Team) -- Return a result object better
 fetchTeam name = findTeam name
 
 currentDuty :: String -> IO (Person,Person)
 currentDuty teamName = do
           roster <- allDuties teamName
-          return $ roster !! 0
+          return $ roster !! 0 -- what to do when the list does not have enough elements
 
 nextDuty :: String -> IO (Person,Person)
 nextDuty teamName = do
           roster <- allDuties teamName
-          return $ roster !! 1
+          return $ roster !! 1 -- what to do when the list does not have enough elements
 
 allDuties :: String -> IO [(Person,Person)]
 allDuties teamName = do
