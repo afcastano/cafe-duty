@@ -2,27 +2,34 @@ module App.Service (fetchTeam, currentDuty, nextDuty, allDuties) where
 
 import App.RosterGeneration
 import App.Repository
+import App.Helper.Lists (rotate)
+import Data.Maybe
 
 fetchTeam :: String -> IO (Maybe Team) -- Return a result object better
 fetchTeam name = findTeam name
 
-currentDuty :: String -> IO (Person,Person)
+currentDuty :: String -> IO [Person]
 currentDuty teamName = do
-          roster <- allDuties teamName
-          return $ roster !! 0 -- what to do when the list does not have enough elements
+          maybeTeam <- findTeam teamName
+          return $ ((!!0).generateRosterFrom) `bindToMaybe` maybeTeam -- make !!0 safer
 
-nextDuty :: String -> IO (Person,Person)
+nextDuty :: String -> IO [Person]
 nextDuty teamName = do
-          roster <- allDuties teamName
-          return $ roster !! 1 -- what to do when the list does not have enough elements
-
-allDuties :: String -> IO [(Person,Person)]
+          maybeTeam <- findTeam teamName
+          return $ ((!!1).generateRosterFrom) `bindToMaybe` maybeTeam -- make !!1 safer
+          
+allDuties :: String -> IO [[Person]]
 allDuties teamName = do
           maybeTeam <- findTeam teamName
-          return $ generateRosterForTeam maybeTeam
+          return $ generateRosterFrom `bindToMaybe` maybeTeam
 
 
------ Internal helpers :: PURE :D
-generateRosterForTeam :: Maybe Team -> [(Person,Person)]
-generateRosterForTeam Nothing = []
-generateRosterForTeam (Just team) = generateRoster $ members team
+---------- Helper functions----
+generateRosterFrom :: Team -> [[Person]]
+generateRosterFrom team = 
+                  let roster  = generateRoster $ members team
+                  in rotate (rosterIndex team) roster
+
+bindToMaybe :: (a -> [b]) -> Maybe a -> [b]
+bindToMaybe f Nothing  = []
+bindToMaybe f (Just a) = f a 

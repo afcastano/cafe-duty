@@ -19,6 +19,7 @@ instance FromJSON Person
 data Team = Team {
     teamName :: String
   , members :: [Person]
+  , rosterIndex :: Int
 } deriving ( Generic, Show )
 
 instance ToJSON Team
