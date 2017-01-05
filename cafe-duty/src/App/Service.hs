@@ -1,16 +1,28 @@
-module App.Service (Team, getTeam, currentDuty, nextDuty, allDuties) where
+module App.Service (fetchTeam, currentDuty, nextDuty, allDuties) where
 
 import App.RosterGeneration
 import App.Repository
 
-getTeam :: String -> IO (Maybe Team)
-getTeam name = findTeam name
+fetchTeam :: String -> IO (Maybe Team)
+fetchTeam name = findTeam name
 
-currentDuty :: (Person,Person)
-currentDuty = (generateRoster allPeople) !! 0
+currentDuty :: String -> IO (Person,Person)
+currentDuty teamName = do
+          roster <- allDuties teamName
+          return $ roster !! 0
 
-nextDuty :: (Person,Person)
-nextDuty = (generateRoster allPeople) !! 1
+nextDuty :: String -> IO (Person,Person)
+nextDuty teamName = do
+          roster <- allDuties teamName
+          return $ roster !! 1
 
-allDuties :: [(Person,Person)]
-allDuties = generateRoster allPeople
+allDuties :: String -> IO [(Person,Person)]
+allDuties teamName = do
+          maybeTeam <- findTeam teamName
+          return $ generateRosterForTeam maybeTeam
+
+
+----- Internal helpers :: PURE :D
+generateRosterForTeam :: Maybe Team -> [(Person,Person)]
+generateRosterForTeam Nothing = []
+generateRosterForTeam (Just team) = generateRoster $ members team

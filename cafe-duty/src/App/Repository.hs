@@ -1,11 +1,12 @@
 {-# LANGUAGE DeriveGeneric #-}
-module App.Repository (Person, Team, allPeople, findTeam) where
+module App.Repository (Person, Team, members, findTeam) where
 
 import Data.Aeson (FromJSON, ToJSON)
 import GHC.Generics
 
 import App.Helper.FileDB
 
+-- Types and instances
 data Person = Person {
     name :: String
   , active :: Bool
@@ -23,29 +24,7 @@ data Team = Team {
 instance ToJSON Team
 instance FromJSON Team
 
-
-bob :: Person
-bob = Person { name = "Bob", active = True, timesOnDuty = 0 }
-
-alice :: Person
-alice = Person { name = "Alice", active = True, timesOnDuty = 0 }
-
-eve :: Person
-eve = Person { name = "Eve", active = True, timesOnDuty = 0 }
-
-peter :: Person
-peter = Person { name = "Peter", active = True, timesOnDuty = 0 }
-
-p1 :: Person
-p1 = Person { name = "P1", active = True, timesOnDuty = 0 }
-
-p2 :: Person
-p2 = Person { name = "P2", active = True, timesOnDuty = 0 }
-
-allPeople :: [Person]
-allPeople = [bob, alice, eve, peter, p1, p2]
-
---- Data access function
+-- Data acces methods
 findTeam :: String -> IO (Maybe Team)
 findTeam name = findEntity "Team" name           
 

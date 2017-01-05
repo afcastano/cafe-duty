@@ -10,16 +10,25 @@ import Data.Aeson (ToJSON)
 webApi :: ScottyM()
 webApi = do
   get "/" $ html "<h1>Robusta Cafe Duty</h1>"
+  
   get "/team/:name" $ do
     name <- param "name"
-    returnJson $ getTeam name
+    returnJson $ fetchTeam name
 
-  get "/people/current-duty/" $ json currentDuty
-  get "/people/next-duty/" $ json nextDuty
-  get "/people/roster/" $ json allDuties
+  get "/team/:name/current-duty/" $ do
+    name <- param "name"
+    returnJson $ currentDuty name
 
+  get "/team/:name/next-duty/" $ do
+    name <- param "name"
+    returnJson $ nextDuty name  
 
-returnJson :: ToJSON a => IO (Maybe a) -> ActionM()
+  get "/team/:name/roster"  $ do
+    name <- param "name"
+    returnJson $ allDuties name
+
+---- Helper functions
+returnJson :: ToJSON a => IO a -> ActionM()
 returnJson ioV = do
-    maybeVal <- liftIO ioV
-    json maybeVal
+    val <- liftIO ioV
+    json val
