@@ -9,3 +9,12 @@ stack build
 
 --- ghci
 stack ghci
+
+
+--- first time
+stack setup
+
+
+--- install stack mac
+brew update
+brew install haskell-stack
