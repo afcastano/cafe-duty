@@ -1,12 +1,12 @@
-module App.RosterGeneration (generateRoster) where
+module App.RosterGeneration (combineElements) where
 import App.Helper.Lists
 
 -- Roster generator algorithm. Can be improved a lot!
-generateRoster :: [a] -> [[a]]
-generateRoster []   = []
-generateRoster list = let (l1, l2) = splitInHalf list
-                          pairs = zipAndRotate 0 l1 l2
-                      in  map pairToList pairs
+combineElements :: [a] -> [[a]]
+combineElements []   = []
+combineElements list = let (l1, l2) = splitInHalf list
+                           pairs = zipAndRotate 0 l1 l2
+                       in  map pairToList pairs
 
 
 pairToList :: (a,a) -> [a]
