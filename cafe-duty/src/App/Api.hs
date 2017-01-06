@@ -30,7 +30,7 @@ webApi = do
 
   get "/team/:name/roster"  $ do
     name <- param "name"
-    returnJson $ allDuties name
+    returnJson $ getAllDuties name
 
 ---- Helper functions
 returnJson :: ToJSON a => IO a -> ActionM()
