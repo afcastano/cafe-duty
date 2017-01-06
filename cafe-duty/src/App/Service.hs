@@ -8,10 +8,10 @@ fetchTeam :: String -> IO (Maybe Team) -- Return a result object better
 fetchTeam name = findTeam name
 
 currentDuty :: String -> IO [Person]
-currentDuty teamName = getDutyForIndex teamName 0
+currentDuty teamName = getFst <$> (getAllDuties teamName)
 
 nextDuty :: String -> IO [Person]
-nextDuty teamName = getDutyForIndex teamName 1
+nextDuty teamName = getSnd <$> (getAllDuties teamName)
           
 getAllDuties :: String -> IO [[Person]]
 getAllDuties teamName =  generateCurrentRoster <$> (findTeam teamName)
@@ -19,22 +19,26 @@ getAllDuties teamName =  generateCurrentRoster <$> (findTeam teamName)
 completeDuty :: String -> IO ()
 completeDuty teamName = completeDutyOnTeam =<< (findTeam teamName)
 
----------- Helper functions----
+--- Helper IO functions
+completeDutyOnTeam :: Maybe Team -> IO ()
+completeDutyOnTeam Nothing      = return ()
+completeDutyOnTeam (Just team)  = saveTeam $ team {rosterIndex = (rosterIndex team) + 1}
+
+
+---------- Helper functions (Pure)----
 generateCurrentRoster :: Maybe Team -> [[Person]]
 generateCurrentRoster Nothing     = [] 
 generateCurrentRoster (Just team) = 
                           let roster  = generateRoster $ members team
                           in rotate (rosterIndex team) roster
 
-getDutyForIndex :: String -> Int -> IO [Person]
-getDutyForIndex teamName idx = (getIndexSafe idx) <$> (getAllDuties teamName)
-
 getIndexSafe :: Int -> [[a]] -> [a]
 getIndexSafe _ []        = []
 getIndexSafe index list  = (cycle list) !! index
 
-completeDutyOnTeam :: Maybe Team -> IO ()
-completeDutyOnTeam Nothing      = return ()
-completeDutyOnTeam (Just team)  = saveTeam $ team {rosterIndex = (rosterIndex team) + 1}
+getFst :: [[a]] -> [a]
+getFst = getIndexSafe 0
 
+getSnd :: [[a]] -> [a]
+getSnd = getIndexSafe 1
 
