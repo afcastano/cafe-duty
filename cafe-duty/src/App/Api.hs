@@ -15,6 +15,11 @@ webApi = do
     name <- param "name"
     returnJson $ fetchTeam name
 
+  get "/team/:name/complete-duty" $ do
+    name <- param "name"
+    liftIO $ completeDuty name
+    returnJson $ currentDuty name
+
   get "/team/:name/current-duty/" $ do
     name <- param "name"
     returnJson $ currentDuty name
