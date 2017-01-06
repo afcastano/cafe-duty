@@ -8,29 +8,32 @@ fetchTeam :: String -> IO (Maybe Team) -- Return a result object better
 fetchTeam name = findTeam name
 
 currentDuty :: String -> IO [Person]
-currentDuty teamName = do
-          roster <- allDuties teamName
-          return $ roster `getSafe` 0 -- make !! 0 safer
+currentDuty teamName = dutyOnIndex teamName 0
 
 nextDuty :: String -> IO [Person]
-nextDuty teamName = do
-          roster <- allDuties teamName
-          return $ roster `getSafe` 1 -- make !! 1 safer
+nextDuty teamName = dutyOnIndex teamName 1
           
 allDuties :: String -> IO [[Person]]
 allDuties teamName = do
           maybeTeam <- findTeam teamName
-          return $ generateRosterFrom maybeTeam
+          return $ currentRosterFrom maybeTeam
 
 
 ---------- Helper functions----
-generateRosterFrom :: Maybe Team -> [[Person]]
-generateRosterFrom Nothing = [] 
-generateRosterFrom (Just team) = 
+currentRosterFrom :: Maybe Team -> [[Person]]
+currentRosterFrom Nothing = [] 
+currentRosterFrom (Just team) = 
                                 let roster  = generateRoster $ members team
                                 in rotate (rosterIndex team) roster
+
+dutyOnIndex :: String -> Int -> IO [Person]
+dutyOnIndex teamName index = do
+          roster <- allDuties teamName
+          return $ roster `getSafe` index
 
 getSafe :: [[a]] -> Int -> [a]
 getSafe [] _        = []
 getSafe list index  = (cycle list) !! index
+
+
 
