@@ -4,14 +4,19 @@
     <title>Cafe Duty</title>
   </head>
   <body>
-    <H2>Cafe Duty for {{name}}</H2>
+    <H2>Next cafe Duty for {{name}}</H2>
     <br/>
     <br/>
     <br/>
-    <h1>{{person1}} <small>and</small> {{person2}}</h1> 
+    <h1>{{thisDuty.p1}} <small>and</small> {{thisDuty.p2}}</h1> 
     <br/>
     <br/>
+    <form action="/team/{{teamId}}/complete-duty" method="post">
+      <button>Complete this duty</button>
+    </form>
     <br/>
+    <hr/>
+    <h3>After that: {{nxtDuty.p1}} and {{nxtDuty.p2}}</h3>
     <hr/>
     <div>
       Here goes the list of team members and the last time they were on duty.

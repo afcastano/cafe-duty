@@ -7,6 +7,7 @@ import App.Roster.Service
 import App.Roster.Repository (findTeam,saveTeam, saveMaybe)
 import App.Roster.Types(Team(..), Person(..))
 
+import Data.Monoid ((<>))
 import Web.Scotty
 import Control.Monad.IO.Class
 import Data.Aeson (ToJSON)
@@ -20,13 +21,11 @@ webApi = do
     name <- param "name"
     returnJson $ findTeam name
 
-  get "/team/:name/complete-duty" $ do
+  post "/team/:name/complete-duty" $ do
     name <- param "name"
-    returnJson $ do
-        maybeTeam <- findTeamAndMap completeDuty name
-        saveMaybe maybeTeam
-        return $ currentDuty <$> maybeTeam
-    
+    liftToActionM $ saveMaybe =<< findTeamAndMap completeDuty name
+    redirect $ pack $ "/web/team/" ++ name
+
   get "/team/:name/current-duty/" $ do
     name <- param "name"
     returnJson $ findTeamAndMap currentDuty name

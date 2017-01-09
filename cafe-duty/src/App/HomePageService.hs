@@ -36,8 +36,11 @@ getHomePageDtoFromTeam team = let thisDuty    = name <$> currentDuty team
 populateHomePage :: HomePageDto -> IO Text
 populateHomePage dto = do
                   let context "name"    = MuVariable $ tName dto
-                      context "person1" = MuVariable $ (thisDuty dto) !! 0
-                      context "person2" = MuVariable $ (thisDuty dto) !! 1
+                      context "thisDuty.p1" = MuVariable $ (thisDuty dto) !! 0
+                      context "thisDuty.p2" = MuVariable $ (thisDuty dto) !! 1
+                      context "nxtDuty.p1" = MuVariable $ (nxtDuty dto) !! 0
+                      context "nxtDuty.p2" = MuVariable $ (nxtDuty dto) !! 1
+                      context "teamId"     = MuVariable $ tName dto
                   useTemplate "templates/index.html" context
 
 useTemplate :: String -> (String -> MuType IO) -> IO Text
