@@ -19,7 +19,10 @@
     <h3>After that: {{nxtDuty.p1}} and {{nxtDuty.p2}}</h3>
     <hr/>
     <div>
-      Here goes the list of team members and the last time they were on duty.
+      <table>
+        <tr><th>Name</th><th>Times on duty</th></tr>
+        {{#people}}<tr><td>{{pName}}</td><td>0</td></tr>{{/people}}
+      </table>
     </div>
   </body>
 </html>

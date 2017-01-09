@@ -41,6 +41,9 @@ populateHomePage dto = do
                       context "nxtDuty.p1" = MuVariable $ (nxtDuty dto) !! 0
                       context "nxtDuty.p2" = MuVariable $ (nxtDuty dto) !! 1
                       context "teamId"     = MuVariable $ tName dto
+                      context "people"    = MuList $ Prelude.map (mkStrContext . mkListContext . name) (teamMembers dto)
+                            where
+                            mkListContext val = \"pName" -> MuVariable val
                   useTemplate "templates/index.html" context
 
 useTemplate :: String -> (String -> MuType IO) -> IO Text
