@@ -1,4 +1,4 @@
-module App.Roster.Service (fetchTeam, currentDuty, nextDuty, getAllDuties, completeDuty) where
+module App.Roster.Service (currentDuty, nextDuty, getAllDuties, completeDuty) where
 
 import App.Roster.RosterGeneration (combineElements)
 import App.Roster.Repository (findTeam, saveTeam)
@@ -6,31 +6,23 @@ import App.Roster.Types (Team(..), Person(..))
 import App.Helper.Lists (rotate)
 
 
-fetchTeam :: String -> IO (Maybe Team) -- Return a result object better
-fetchTeam name = findTeam name
+currentDuty :: Team -> [Person]
+currentDuty team = getFst $ getAllDuties team
 
-currentDuty :: String -> IO [Person]
-currentDuty teamName = getFst <$> getAllDuties teamName
-
-nextDuty :: String -> IO [Person]
-nextDuty teamName = getSnd <$> getAllDuties teamName
+nextDuty :: Team -> [Person]
+nextDuty team = getSnd $ getAllDuties team
           
-getAllDuties :: String -> IO [[Person]]
-getAllDuties teamName =  generateCurrentRoster <$> findTeam teamName
+getAllDuties :: Team -> [[Person]]
+getAllDuties team =  generateCurrentRoster team
 
-completeDuty :: String -> IO ()
-completeDuty teamName = completeDutyOnTeam =<< findTeam teamName
-
---- Helper IO functions
-completeDutyOnTeam :: Maybe Team -> IO ()
-completeDutyOnTeam Nothing      = return ()
-completeDutyOnTeam (Just team)  = saveTeam $ team {rosterIndex = (rosterIndex team) + 1}
+completeDuty :: Team -> Team
+completeDuty team = team {rosterIndex = (rosterIndex team) + 1}
 
 
----------- Helper functions (Pure)----
-generateCurrentRoster :: Maybe Team -> [[Person]]
-generateCurrentRoster Nothing     = [] 
-generateCurrentRoster (Just team) = 
+
+---------- Helper functions ----
+generateCurrentRoster :: Team -> [[Person]]
+generateCurrentRoster team = 
                           let roster  = combineElements $ members team
                           in rotate (rosterIndex team) roster
 

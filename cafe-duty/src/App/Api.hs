@@ -2,6 +2,7 @@
 module App.Api (webApi) where
 
 import App.Roster.Service
+import App.Roster.Repository (findTeam,saveTeam)
 import App.Roster.Types(Team(..), Person(..))
 
 import Web.Scotty
@@ -18,41 +19,69 @@ webApi = do
   
   get "/team/:name" $ do
     name <- param "name"
-    returnJson $ fetchTeam name
+    returnJson $ findTeam name
 
   get "/team/:name/complete-duty" $ do
     name <- param "name"
-    liftIO $ completeDuty name
-    returnJson $ currentDuty name
-
+    maybeTeam <- liftIO $ findTeam name
+    case maybeTeam of
+      Nothing -> html "Not found"
+      Just team -> do 
+        let newTeam = completeDuty team
+        liftIO $ saveTeam newTeam
+        returnJson $ return $ currentDuty newTeam
+    
   get "/team/:name/current-duty/" $ do
     name <- param "name"
-    returnJson $ currentDuty name
+    returnJson $ fmap (fmap currentDuty) (findTeam name)
 
   get "/team/:name/next-duty/" $ do
     name <- param "name"
-    returnJson $ nextDuty name  
+    returnJson $ fmap (fmap nextDuty) (findTeam name)
 
   get "/team/:name/roster"  $ do
     name <- param "name"
-    returnJson $ getAllDuties name
+    returnJson $ fmap (fmap getAllDuties) (findTeam name)
 
   get "/web/team/:name" $ do
     tName <- param "name"
-    duty     <- liftToActionM $ currentDuty tName
-    returnHtml $ populateHomePage duty tName
+    homePageDto <- liftToActionM $ getHomePageDto tName
+    returnHtml $ populateHomePage homePageDto
 
     
----- Templating - Extract to other file
-populateHomePage :: [Person] -> String -> IO Text
-populateHomePage duty tName = do
-                  let context "name"    = MuVariable tName
-                      context "person1" = MuVariable $ name (duty !! 0)
-                      context "person2" = MuVariable $ name (duty !! 1)
+---- UI specific stuff.
+--- home page
+data HomePageDto = HomePageDto {
+     tName    ::    String
+    ,thisDuty ::    [String]
+    ,nxtDuty ::     [String]
+    ,teamMembers :: [Person]
+}
+
+emptyTeam :: String -> HomePageDto 
+emptyTeam tName = HomePageDto tName [] [] []
+
+getHomePageDto :: String -> IO HomePageDto
+getHomePageDto name = do
+    maybeTeam <- findTeam name
+    case maybeTeam of
+      Nothing -> return $ emptyTeam name
+      Just team -> return $ getHomePageDtoFromTeam team
+
+getHomePageDtoFromTeam :: Team -> HomePageDto
+getHomePageDtoFromTeam team = let thisDuty    = name <$> currentDuty team
+                                  nxtDuty     = name <$> nextDuty team
+                                  teamMembers = members team
+                              in HomePageDto (teamName team) thisDuty nxtDuty teamMembers
+
+populateHomePage :: HomePageDto -> IO Text
+populateHomePage dto = do
+                  let context "name"    = MuVariable $ tName dto
+                      context "person1" = MuVariable $ (thisDuty dto) !! 0
+                      context "person2" = MuVariable $ (thisDuty dto) !! 1
                   useTemplate "templates/index.html" context
 
 ----- Hepler funcitons                  
-
 returnJson :: ToJSON a => IO a -> ActionM()
 returnJson ioV = do
     val <- liftAndCatchIO ioV
