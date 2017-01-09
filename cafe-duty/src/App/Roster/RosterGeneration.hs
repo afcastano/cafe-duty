@@ -1,4 +1,4 @@
-module App.RosterGeneration (combineElements) where
+module App.Roster.RosterGeneration (combineElements) where
 import App.Helper.Lists
 
 -- Roster generator algorithm. Can be improved a lot!

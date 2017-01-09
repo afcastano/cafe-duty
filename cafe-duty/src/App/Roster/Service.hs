@@ -1,8 +1,10 @@
-module App.Service (fetchTeam, currentDuty, nextDuty, getAllDuties, completeDuty) where
+module App.Roster.Service (fetchTeam, currentDuty, nextDuty, getAllDuties, completeDuty) where
 
-import App.RosterGeneration (combineElements)
-import App.Repository (Team(..), Person, findTeam, saveTeam)
+import App.Roster.RosterGeneration (combineElements)
+import App.Roster.Repository (findTeam, saveTeam)
+import App.Roster.Types (Team(..), Person(..))
 import App.Helper.Lists (rotate)
+
 
 fetchTeam :: String -> IO (Maybe Team) -- Return a result object better
 fetchTeam name = findTeam name

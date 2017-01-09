@@ -18,11 +18,12 @@ executable cafe-duty
   main-is:             Main.hs
   default-language:    Haskell2010
   other-modules:       App.Api,
-                       App.Service,
+                       App.Roster.Service,
+                       App.Roster.RosterGeneration,
+                       App.Roster.Repository,
+                       App.Roster.Types,
                        App.Helper.Lists,
-                       App.Helper.FileDB,
-                       App.RosterGeneration,
-                       App.Repository
+                       App.Helper.FileDB
   build-depends:       base >= 4.7 && < 5,
                        scotty,
                        hastache,

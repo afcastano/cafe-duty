@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 module App.Api (webApi) where
 
-import App.Service
-import App.Repository(Team(..), Person(..))
+import App.Roster.Service
+import App.Roster.Types(Team(..), Person(..))
 
 import Web.Scotty
 import Control.Monad.IO.Class
@@ -41,15 +41,17 @@ webApi = do
     tName <- param "name"
     duty     <- liftToActionM $ currentDuty tName
     returnHtml $ populateHomePage duty tName
+
     
-    
----- Helper functions
+---- Templating - Extract to other file
 populateHomePage :: [Person] -> String -> IO Text
 populateHomePage duty tName = do
                   let context "name"    = MuVariable tName
                       context "person1" = MuVariable $ name (duty !! 0)
                       context "person2" = MuVariable $ name (duty !! 1)
                   useTemplate "templates/index.html" context
+
+----- Hepler funcitons                  
 
 returnJson :: ToJSON a => IO a -> ActionM()
 returnJson ioV = do
