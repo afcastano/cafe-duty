@@ -38,19 +38,29 @@ webApi = do
     returnJson $ getAllDuties name
 
   get "/web/team/:name" $ do
-    teamName <- param "name"
-    currentDuty <- liftAndCatchIO $ currentDuty teamName
-    let context "name"    = MuVariable teamName
-        context "person1" = MuVariable $ name (currentDuty !! 0)
-        context "person2" = MuVariable $ name (currentDuty !! 1)
-    returnHtml $ hastacheFile defaultConfig "templates/index.html" (mkStrContext context)
+    tName <- param "name"
+    duty     <- liftToActionM $ currentDuty tName
+    returnHtml $ populateHomePage duty tName
     
     
 ---- Helper functions
+populateHomePage :: [Person] -> String -> IO Text
+populateHomePage duty tName = do
+                  let context "name"    = MuVariable tName
+                      context "person1" = MuVariable $ name (duty !! 0)
+                      context "person2" = MuVariable $ name (duty !! 1)
+                  useTemplate "templates/index.html" context
+
 returnJson :: ToJSON a => IO a -> ActionM()
 returnJson ioV = do
     val <- liftAndCatchIO ioV
     json val
+
+useTemplate :: String -> (String -> MuType IO) -> IO Text
+useTemplate templateName context = hastacheFile defaultConfig templateName (mkStrContext context)
+
+liftToActionM :: IO a -> ActionM a
+liftToActionM io = liftAndCatchIO io
 
 returnHtml :: IO Text -> ActionM()
 returnHtml ioV = do
