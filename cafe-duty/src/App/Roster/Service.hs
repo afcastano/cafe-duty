@@ -2,8 +2,8 @@ module App.Roster.Service (currentDuty, nextDuty, getAllDuties, completeDuty) wh
 
 import App.Roster.RosterGeneration (combineElements)
 import App.Roster.Repository (findTeam, saveTeam)
-import App.Roster.Types (Team(..), Person(..))
-import App.Helper.Lists (rotate)
+import App.Roster.Types (Team(..), Person(..), increaseRosterIndex, increaseTimesOnDuty)
+import App.Helper.Lists (rotate, transformElem)
 
 
 currentDuty :: Team -> [Person]
@@ -16,11 +16,24 @@ getAllDuties :: Team -> [[Person]]
 getAllDuties team =  generateCurrentRoster team
 
 completeDuty :: Team -> Team
-completeDuty team = team {rosterIndex = (rosterIndex team) + 1}
+completeDuty team = let updatedTeam = updateTimesOnDuty team
+                    in
+                    increaseRosterIndex updatedTeam
 
 
 
 ---------- Helper functions ----
+
+updateTimesOnDuty :: Team -> Team
+updateTimesOnDuty team = let onDuty           = currentDuty team
+                             membersPartial   = updateTimesOnDutyForPerson (onDuty !! 0) (members team)
+                             updatedMembers   = updateTimesOnDutyForPerson (onDuty !! 1) membersPartial
+                         in
+                         team {members = updatedMembers}
+
+updateTimesOnDutyForPerson :: Person -> [Person] -> [Person]
+updateTimesOnDutyForPerson p1 list = transformElem increaseTimesOnDuty p1 list
+
 generateCurrentRoster :: Team -> [[Person]]
 generateCurrentRoster team = 
                           let roster  = combineElements $ members team

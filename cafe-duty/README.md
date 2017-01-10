@@ -26,3 +26,4 @@ brew install haskell-stack
 - Create a DBResult monad instead of IO Maybe
 - Handle errors
 - Type alias to variables for better readibility
+- WRITE TESTS!!!

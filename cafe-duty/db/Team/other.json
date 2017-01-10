@@ -1,1 +1,16 @@
-{"teamName":"other","members":[{"active":true,"name":"AAA","timesOnDuty":0},{"active":true,"name":"BBB","timesOnDuty":0}],"rosterIndex":1}
+{
+    "teamName": "other",
+    "members": [
+        {
+            "active": true,
+            "name": "AAA",
+            "timesOnDuty": 1
+        },
+        {
+            "active": true,
+            "name": "BBB",
+            "timesOnDuty": 1
+        }
+    ],
+    "rosterIndex": 2
+}

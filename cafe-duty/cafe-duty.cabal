@@ -31,4 +31,6 @@ executable cafe-duty
                        aeson,
                        bytestring,
                        directory,
-                       text
+                       text,
+                       containers,
+                       aeson-pretty

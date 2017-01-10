@@ -1,7 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 module App.Helper.FileDB (findEntity, saveEntity) where
 
-import Data.Aeson (FromJSON, ToJSON, decode, encode)
+import Data.Aeson (FromJSON, ToJSON, decode)
+import Data.Aeson.Encode.Pretty (encodePretty)
 import Data.ByteString.Lazy.Char8
 import Prelude as P
 import System.Directory
@@ -14,7 +15,7 @@ findEntity entityKind name = do
 
 saveEntity :: ToJSON a => String -> String -> a -> IO () -- Consider returning the id
 saveEntity entityKind entityId entity = do
-                          let encodedEntity = encode entity -- Encode the entity to JSON
+                          let encodedEntity = encodePretty entity -- Encode the entity to JSON
                           writeFileDB entityKind entityId encodedEntity
 
 
