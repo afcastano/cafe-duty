@@ -4,5 +4,4 @@ import Web.Scotty
 import App.Api
 
 main :: IO ()
-main = do
-  scotty 3000 webApi
+main = scotty 3000 webApi

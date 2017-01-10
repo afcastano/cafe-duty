@@ -3,8 +3,8 @@ module App.Api (webApi) where
 
 import App.HomePageService (getHomePageText)
 
-import App.Roster.Service
-import App.Roster.Repository (findTeam,saveTeam, saveMaybe)
+import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties)
+import App.Roster.Repository (findTeam, findTeamAndMap, saveMaybeTeam)
 import App.Roster.Types(Team(..), Person(..))
 
 import Data.Monoid ((<>))
@@ -15,16 +15,10 @@ import Data.Text.Lazy
 
 webApi :: ScottyM()
 webApi = do
-  get "/" $ html "<h1>Robusta Cafe Duty</h1>"
-  
+-- Rest Api
   get "/team/:name" $ do
     name <- param "name"
     returnJson $ findTeam name
-
-  post "/team/:name/complete-duty" $ do
-    name <- param "name"
-    liftToActionM $ saveMaybe =<< findTeamAndMap completeDuty name
-    redirect $ pack $ "/web/team/" ++ name
 
   get "/team/:name/current-duty/" $ do
     name <- param "name"
@@ -38,17 +32,17 @@ webApi = do
     name <- param "name"
     returnJson $ findTeamAndMap getAllDuties name
 
+-- Web pages
   get "/web/team/:name" $ do
     tName <- param "name"
     returnHtml $ getHomePageText =<< findTeam tName
 
+  post "/team/:name/complete-duty" $ do
+    name <- param "name"
+    liftToActionM $ saveMaybeTeam =<< findTeamAndMap completeDuty name
+    redirect $ pack $ "/web/team/" ++ name
+
 ----- Hepler funcitons        
-
-findTeamAndMap :: (Team -> a) -> String -> IO (Maybe a)
-findTeamAndMap mapper teamName = do
-                            maybeTeam <- findTeam teamName
-                            return $ mapper <$> maybeTeam
-
 returnJson :: ToJSON a => IO a -> ActionM()
 returnJson ioV = do
     val <- liftAndCatchIO ioV
