@@ -33,4 +33,6 @@ executable cafe-duty
                        directory,
                        text,
                        containers,
-                       aeson-pretty
+                       aeson-pretty,
+                       wai-middleware-static,
+                       wai-extra

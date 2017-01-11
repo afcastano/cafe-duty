@@ -1,32 +1,107 @@
 <!DOCTYPE html>
-  <html>
-  <head>
-  <style type="text/css">
-    table, th, td {border: 1px solid black;}  
-  </style>
-  
-    <title>Cafe Duty</title>
-  </head>
-  <body>
-    <H2>Next cafe Duty for {{name}}</H2>
-    <br/>
-    <br/>
-    <br/>
-    <h1>{{thisDuty.p1}} <small>and</small> {{thisDuty.p2}}</h1> 
-    <br/>
-    <br/>
-    <form action="/team/{{teamId}}/complete-duty" method="post">
-      <button>Complete this duty</button>
-    </form>
-    <br/>
-    <hr/>
-    <h3>After that: {{nxtDuty.p1}} and {{nxtDuty.p2}}</h3>
-    <hr/>
-    <div>
-      <table>
-        <tr><th>Name</th><th>Times on duty</th></tr>
-        {{#people}}<tr><td>{{pName}}</td><td>{{pTimes}}</td></tr>{{/people}}
-      </table>
-    </div>
-  </body>
+<!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+
+   <!--- basic page needs
+   ================================================== -->
+   <meta charset="utf-8">
+	<title>Cafe Duty</title>
+	<meta name="description" content="People on cafe duty">  
+	<meta name="author" content="afcastano">
+
+   <!-- mobile specific metas
+   ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+ 	<!-- CSS
+   ================================================== -->
+   <link rel="stylesheet" href="/css/base.css">  
+   <link rel="stylesheet" href="/css/main.css">
+   <link rel="stylesheet" href="/css/vendor.css">     
+
+   <!-- script
+   ================================================== -->
+	<script src="/js/modernizr.js"></script>
+
+   <!-- favicons
+	================================================== -->
+	<link rel="icon" type="image/png" href="/favicon.png">
+
+</head>
+
+<body>
+
+	<!-- header 
+   ================================================== -->
+   
+	<!-- main content
+   ================================================== -->
+   <main id="main-404-content" class="main-content-slides">
+
+   	<div class="content-wrap">
+
+		   <div class="shadow-overlay"></div>
+		   <div class="main-content">
+        <div class="row" style="min-height: 50px;">
+          <div class="col-twelve">
+            <a href="index.html" style="padding-left: 10px;font-size: 40px;">{{name}} - Cafe Duty</a>
+          </div>
+        </div>
+		   	<div class="row">
+		   		<div class="col-twelve">
+			  		
+			  			<h1><span class="kern-this">{{thisDuty.p1}}</span> <span class="kern-this" style="text-transform: none">and</span> 
+              <span class="kern-this">{{thisDuty.p2}}</span></h1>
+              <p>After that: <span style="color: white;">{{nxtDuty.p1}} and {{nxtDuty.p2}}</span></p>
+			   	</div> <!-- /twelve --> 		   			
+		   	</div> <!-- /row -->    		 		
+        <div class="row">
+        <div class="col-three">
+          <div class="search">
+              <form action="/team/{{teamId}}/complete-duty" method="post">
+                <button style="
+                              background-color: rgba(255, 255, 255, 0.1);
+                              border-color: rgba(255, 255, 255, 0.1);
+                              color: rgba(255, 255, 255, 0.8);
+                              padding: 10px;
+                          ">Complete this duty</button>
+              </form>
+          </div>          
+        </div>
+        <div class="col-four">
+          <h3 style="padding-left:20px">Times on duty</h3>
+          <ul id="double" class="ulcolumn">
+          {{#people}}
+            <li><span style="display:inline-block; width: 80px;">{{pName}}</span>{{pTimes}}</li>
+          {{/people}}
+          </ul>
+        </div>
+        </div>
+		   </div> <!-- /main-content --> 
+
+		   <footer>
+		   	<div class="row">	
+		  			<div class="col-five tab-full bottom-links">
+			   		<ul class="links">
+				   		<li><a href="#">Github</a></li>
+				      <li><a href="http://afcastano.com" target="_blank">About</a></li>
+				   	</ul>
+			   	</div>   		   		
+
+		   	</div> <!-- /row -->    		  		
+		   </footer>
+
+		</div> <!-- /content-wrap -->
+   
+   </main> <!-- /main-404-content -->
+   <!-- Java Script
+   ================================================== --> 
+   <script src="/js/jquery-2.1.3.min.js"></script>
+   <script src="/js/plugins.js"></script>
+   <script src="/js/main.js"></script>
+
+</body>
+
 </html>

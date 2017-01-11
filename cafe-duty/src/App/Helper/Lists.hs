@@ -5,7 +5,7 @@ import Data.Foldable (toList)
 
 splitInHalf :: [a] -> ([a], [a])
 splitInHalf [] = ([],[])
-splitInHalf list = let splitIndex = (L.length (list) + 1) `div` 2 
+splitInHalf list = let splitIndex = (L.length (list)) `div` 2 
                    in L.splitAt (splitIndex) list
 
 replaceIndex :: Int -> a -> [a] -> [a]
