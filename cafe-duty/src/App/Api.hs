@@ -7,7 +7,6 @@ import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties)
 import App.Roster.Repository (findTeam, findTeamAndMap, saveMaybeTeam)
 import App.Roster.Types(Team(..), Person(..))
 
-import Data.Monoid ((<>))
 import Web.Scotty
 import Control.Monad.IO.Class
 import Data.Aeson (ToJSON)
