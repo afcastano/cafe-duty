@@ -1,10 +1,10 @@
 module Main where
 import Web.Scotty
-import Network.Wai.Middleware.Static
+import Network.Wai.Middleware.Static (staticPolicy, noDots, addBase, (>->))
 
-import App.Api
+import App.Api (webApi)
 
 main :: IO ()
 main = scotty 3000 $ do 
-  middleware $ staticPolicy (noDots >-> addBase "static")
+  middleware $ staticPolicy (noDots >-> addBase "static") -- set up the static folder
   webApi
