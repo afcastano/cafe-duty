@@ -1,23 +1,16 @@
-Cafe duty pair selector
+## Cafe duty
 
 
--- run
-stack exec cafe-duty
+- run: `stack exec cafe-duty`
 
--- build
-stack build
+- build: `stack build`
 
---- ghci
-stack ghci
+- ghci: `stack ghci`
 
-
---- first time
-stack setup
+- First time usage: `stack setup`
 
 
---- install stack mac
-brew update
-brew install haskell-stack
+- install stack mac: `brew update` and then `brew install haskell-stack`
 
 ### Wanted refactors
 
