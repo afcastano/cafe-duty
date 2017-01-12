@@ -4,48 +4,48 @@
         {
             "active": true,
             "name": "James",
-            "timesOnDuty": 9
+            "timesOnDuty": 0
         },
         {
             "active": true,
             "name": "Andres",
-            "timesOnDuty": 9
+            "timesOnDuty": 0
         },
         {
             "active": true,
             "name": "Jeremy",
-            "timesOnDuty": 9
+            "timesOnDuty": 0
         },
         {
             "active": true,
             "name": "Zsofi",
-            "timesOnDuty": 8
+            "timesOnDuty": 0
         },
         {
             "active": true,
             "name": "Vuthy",
-            "timesOnDuty": 7
+            "timesOnDuty": 0
         },
         {
             "active": true,
             "name": "Dan",
-            "timesOnDuty": 8
+            "timesOnDuty": 0
         },
         {
             "active": true,
             "name": "Lars",
-            "timesOnDuty": 7
+            "timesOnDuty": 0
         },
         {
             "active": true,
             "name": "Paul",
-            "timesOnDuty": 7
+            "timesOnDuty": 0
         },
         {
             "active": true,
             "name": "Hiroshi",
-            "timesOnDuty": 6
+            "timesOnDuty": 0
         }
     ],
-    "rosterIndex": 47
+    "rosterIndex": 0
 }
