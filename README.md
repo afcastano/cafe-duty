@@ -1,3 +1,4 @@
-CAFE-DUTY
+## How to use
+1- cd cafe-duty
 
-App: CAFE-DUTY
+2- Read README.md
