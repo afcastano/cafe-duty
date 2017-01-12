@@ -1,5 +1,5 @@
 module Main where
-import Web.Scotty
+import Web.Scotty (scotty, middleware)
 import Network.Wai.Middleware.Static (staticPolicy, noDots, addBase, (>->))
 
 import App.Api (webApi)
