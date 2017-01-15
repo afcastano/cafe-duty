@@ -4,12 +4,12 @@
         {
             "active": true,
             "name": "James",
-            "timesOnDuty": 0
+            "timesOnDuty": 1
         },
         {
             "active": true,
             "name": "Andres",
-            "timesOnDuty": 0
+            "timesOnDuty": 1
         },
         {
             "active": true,
@@ -24,12 +24,12 @@
         {
             "active": true,
             "name": "Vuthy",
-            "timesOnDuty": 0
+            "timesOnDuty": 1
         },
         {
             "active": true,
             "name": "Dan",
-            "timesOnDuty": 0
+            "timesOnDuty": 1
         },
         {
             "active": true,
@@ -47,5 +47,5 @@
             "timesOnDuty": 0
         }
     ],
-    "rosterIndex": 0
+    "rosterIndex": 2
 }
