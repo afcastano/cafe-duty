@@ -4,13 +4,28 @@
         {
             "active": true,
             "name": "AAA",
-            "timesOnDuty": 1
+            "timesOnDuty": 4
         },
         {
             "active": true,
             "name": "BBB",
-            "timesOnDuty": 1
+            "timesOnDuty": 4
+        },
+        {
+            "active": true,
+            "name": "CCC",
+            "timesOnDuty": 2
+        },
+        {
+            "active": true,
+            "name": "DDD",
+            "timesOnDuty": 2
+        },
+        {
+            "active": true,
+            "name": "EEE",
+            "timesOnDuty": 2
         }
     ],
-    "rosterIndex": 2
+    "rosterIndex": 8
 }

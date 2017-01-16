@@ -2,11 +2,11 @@
 module App.Api (webApi) where
 
 import App.HomePageService (getHomePageText)
-import App.TeamPageService (getNewTeamPage)
+import App.TeamPageService (getNewTeamPage, getEditTeamPage)
 
 import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties)
 import App.Roster.Repository (findTeam, findTeamAndMap, saveMaybeTeam, saveTeam)
-import App.Roster.Types(Team(..), Person(..), newTeam)
+import App.Roster.Types(Team(..), Person(..), newTeam, newPerson, addPersonToTeam)
 
 import Web.Scotty
 import Control.Monad.IO.Class
@@ -40,10 +40,21 @@ webApi = do
   get "/web/edit/team/" $ do
     returnHtml $ getNewTeamPage
 
-  post "/team/edit/new" $ do
+  get "/web/edit/team/:name" $ do
+    tName <- param "name"
+    returnHtml $ getEditTeamPage =<< findTeam tName
+
+  post "/edit/team/" $ do
     teamName <- param "teamName"
     liftToActionM $ saveTeam $ newTeam teamName
-    redirect "/web/edit/team/"
+    redirect $ pack $ "/web/edit/team/" ++ teamName
+
+  post "/edit/team/:name/add-member/" $ do
+    teamName <- param "name"
+    personName <- param "personName"
+    let person = newPerson personName
+    liftToActionM $ saveMaybeTeam =<< findTeamAndMap (addPersonToTeam person) teamName
+    redirect $ pack $ "/web/edit/team/" ++ teamName
 
 
   post "/team/:name/complete-duty" $ do

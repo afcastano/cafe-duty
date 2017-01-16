@@ -47,13 +47,23 @@
        <div class="main-content">
        <div class="row" style="min-height: 80px;">
           <div class="col-twelve action-title">
-            <a href="javascript:void(0)" style="padding-left: 10px;font-size: 40px;">New team</a>
+            <a href="javascript:void(0)" style="padding-left: 10px;font-size: 40px;">{{name}} - Edit team</a>
           </div>
         </div>
         <div class="row">
-            <form action="/edit/team/" method="post">
+          <div class="col-twelve">
+            <h3 style="padding-left:20px">Team members</h3>
+            <ul id="double" class="ulcolumn">
+              {{#people}}
+                <li><span style="display:inline-block;">{{pName}}</span></li>
+              {{/people}}
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+            <form action="/edit/team/{{name}}/add-member" method="post">
               <div class="col-two">
-                <input type="text" name="teamName" placeholder="Enter name"></input>
+                <input type="text" name="personName" placeholder="Member name"></input>
               </div>
               <div class="col-nine">
                 <button style="
@@ -61,7 +71,7 @@
                               border-color: rgba(255, 255, 255, 0.1);
                               color: rgba(255, 255, 255, 0.8);
                               padding: 10px;
-                          ">Create new team</button>
+                          ">Add member</button>
               </div>
             </form>
           </div>
@@ -72,6 +82,7 @@
         <div class="row"> 
             <div class="col-six tab-full bottom-links">
             <ul class="links">
+              <li><a href="/web/team/{{name}}" target="_blank">Start duty</a></li>
             </ul>
           </div>            
           <div class="col-five tab-full bottom-links">
