@@ -958,6 +958,16 @@ header .logo a {
 	left: 9px;
 }
 
+.action-title::after {
+	content: "";
+	display: block;
+	background: #c25d02;
+	width: 120px;
+	height: 3px;
+	top: 0;
+	left: 9px;
+}
+
 
 /* CSS styles for kerning. See lettering.js website for details:
  * https://github.com/davatron5000/Lettering.js

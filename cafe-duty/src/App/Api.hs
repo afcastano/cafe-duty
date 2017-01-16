@@ -2,10 +2,11 @@
 module App.Api (webApi) where
 
 import App.HomePageService (getHomePageText)
+import App.TeamPageService (getNewTeamPage)
 
 import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties)
-import App.Roster.Repository (findTeam, findTeamAndMap, saveMaybeTeam)
-import App.Roster.Types(Team(..), Person(..))
+import App.Roster.Repository (findTeam, findTeamAndMap, saveMaybeTeam, saveTeam)
+import App.Roster.Types(Team(..), Person(..), newTeam)
 
 import Web.Scotty
 import Control.Monad.IO.Class
@@ -36,10 +37,20 @@ webApi = do
     tName <- param "name"
     returnHtml $ getHomePageText =<< findTeam tName
 
+  get "/web/edit/team/" $ do
+    returnHtml $ getNewTeamPage
+
+  post "/team/edit/new" $ do
+    teamName <- param "teamName"
+    liftToActionM $ saveTeam $ newTeam teamName
+    redirect "/web/edit/team/"
+
+
   post "/team/:name/complete-duty" $ do
     name <- param "name"
     liftToActionM $ saveMaybeTeam =<< findTeamAndMap completeDuty name
     redirect $ pack $ "/web/team/" ++ name
+
 
 ----- Hepler funcitons        
 returnJson :: ToJSON a => IO a -> ActionM()

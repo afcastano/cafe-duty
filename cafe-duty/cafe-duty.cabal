@@ -19,6 +19,7 @@ executable cafe-duty
   default-language:    Haskell2010
   other-modules:       App.Api,
                        App.HomePageService,
+                       App.TeamPageService,
                        App.Roster.Service,
                        App.Roster.RosterGeneration,
                        App.Roster.Repository,
