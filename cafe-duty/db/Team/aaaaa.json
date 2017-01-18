@@ -1,0 +1,36 @@
+{
+    "teamName": "aaaaa",
+    "members": [
+        {
+            "active": true,
+            "name": "1",
+            "timesOnDuty": 29
+        },
+        {
+            "active": true,
+            "name": "2",
+            "timesOnDuty": 29
+        },
+        {
+            "active": true,
+            "name": "3",
+            "timesOnDuty": 29
+        },
+        {
+            "active": true,
+            "name": "4",
+            "timesOnDuty": 29
+        },
+        {
+            "active": true,
+            "name": "5",
+            "timesOnDuty": 29
+        },
+        {
+            "active": true,
+            "name": "6",
+            "timesOnDuty": 29
+        }
+    ],
+    "rosterIndex": 87
+}

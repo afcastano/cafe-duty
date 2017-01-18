@@ -1,4 +1,4 @@
-module App.Helper.Lists (splitInHalf, rotate, replaceElem, transformElem) where
+module App.Helper.Lists (splitInHalf, rotate, replaceElem, transformElem, replaceIndex) where
 import Data.List as L
 import Data.Sequence
 import Data.Foldable (toList)
