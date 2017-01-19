@@ -67,7 +67,7 @@ extra-package-dbs: []
 
 # Docker integration
 docker:
-  enable: false
+  enable: true
 image:
   container:
     name: afcastano/hs
