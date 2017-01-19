@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module App.TeamPageService (getNewTeamPage, getEditTeamPage) where
+module App.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage) where
 
 import Text.Hastache
 import Text.Hastache.Context
@@ -14,6 +14,11 @@ getNewTeamPage :: IO Text
 getNewTeamPage = do
               let context "name" = MuVariable $ "Create" -- DUH????
               useTemplate "templates/new_team.html" context
+
+getCompleteDutyPage :: IO Text
+getCompleteDutyPage = do
+                  let context "name" = MuVariable $ "Create" -- DUH????
+                  useTemplate "templates/complete_duty.html" context
 
 getEditTeamPage :: Maybe Team -> IO Text
 getEditTeamPage Nothing     = populatePage $ emptyDto "Not found"

@@ -2,7 +2,7 @@
 module App.Api (webApi) where
 
 import App.HomePageService (getHomePageText)
-import App.TeamPageService (getNewTeamPage, getEditTeamPage)
+import App.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage)
 
 import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties)
 import App.Roster.Repository (findTeam, findTeamAndMap, saveMaybeTeam, saveTeam)
@@ -44,6 +44,9 @@ webApi = do
     tName <- param "name"
     returnHtml $ getEditTeamPage =<< findTeam tName
 
+  get "/web/complete-duty" $ do
+    returnHtml $ getCompleteDutyPage
+
   post "/edit/team/" $ do
     teamName <- param "teamName"
     liftToActionM $ saveTeam $ newTeam teamName
@@ -57,8 +60,8 @@ webApi = do
     redirect $ pack $ "/web/edit/team/" ++ teamName
 
 
-  post "/team/:name/complete-duty" $ do
-    name <- param "name"
+  post "/complete-duty" $ do
+    name <- param "teamName"
     liftToActionM $ saveMaybeTeam =<< findTeamAndMap completeDuty name
     redirect $ pack $ "/web/team/" ++ name
 
