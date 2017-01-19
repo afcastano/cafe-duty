@@ -35,5 +35,7 @@ executable cafe-duty
                        text,
                        containers,
                        aeson-pretty,
+                       wai,
                        wai-middleware-static,
                        wai-extra
+
