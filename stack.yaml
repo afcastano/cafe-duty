@@ -64,20 +64,3 @@ extra-package-dbs: []
 #
 # Allow a newer minor version of GHC than the snapshot specifies
 # compiler-check: newer-minor
-
-# Docker integration
-docker:
-  enable: true
-image:
-  container:
-    name: afcastano/hs
-    base: fpco/stack-run
-    add:
-      static: /static
-      templates: /templates
-    entrypoints:
-      - cafe-duty
-
-
-
-
