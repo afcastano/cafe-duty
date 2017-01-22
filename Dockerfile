@@ -1,8 +1,13 @@
 FROM fpco/stack-build:lts-7.15
 
-COPY . /cafe-duty
+COPY ./stack.yaml /cafe-duty/stack.yaml
+COPY ./cafe-duty.cabal /cafe-duty/cafe-duty.cabal
 
 WORKDIR /cafe-duty
+
+RUN stack --system-ghc build --dependencies-only
+
+COPY . /cafe-duty
 
 RUN stack --system-ghc build
 

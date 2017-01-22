@@ -1,5 +1,9 @@
 ## Cafe duty
 
+Generates a roster of pairs given a team of people.
+
+
+## Development
 - First time usage: `stack setup`
 
 - build: `stack build`
