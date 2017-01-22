@@ -29,7 +29,6 @@
    <!-- favicons
 	================================================== -->
 	<link rel="icon" type="image/png" href="/favicon.png">
-
 </head>
 
 <body>
@@ -97,6 +96,16 @@
    <script src="/js/jquery-2.1.3.min.js"></script>
    <script src="/js/plugins.js"></script>
    <script src="/js/main.js"></script>
+   <script>
+     $(document).ready(function(){
+      setInterval(function(){cache_clear()},2 * 60 * 60 * 1000);
+     });
+
+     function cache_clear()
+      {
+       window.location.reload(true);
+      }
+    </script>
 
 </body>
 
