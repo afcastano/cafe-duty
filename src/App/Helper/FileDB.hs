@@ -9,11 +9,12 @@ import Data.ByteString.Lazy.Char8
 import Prelude as P
 import System.Directory (listDirectory, createDirectoryIfMissing)
 import Data.List as List
+import Control.Exception (try)
 
 findEntity :: FromJSON a => String -> String -> IO (Maybe a)
 findEntity entityKind name = do
-                          stringVal <- readFileDB entityKind name
-                          return $ decode stringVal -- decode from Json to the Record.
+                          maybeStringVal <- readFileDB entityKind name
+                          return $ decode =<< maybeStringVal -- decode from Json to the Record.
 
 saveEntity :: ToJSON a => String -> String -> a -> IO () -- Consider returning the id
 saveEntity entityKind entityId entity = do
@@ -36,10 +37,13 @@ writeFileDB path name content = do
     -- http://stackoverflow.com/questions/2527271/in-haskell-i-want-to-read-a-file-and-then-write-to-it-do-i-need-strictness-ann
     List.length contentStr `seq` P.writeFile (buildDbFilePath path name) contentStr
 
-readFileDB :: String -> String -> IO ByteString
+readFileDB :: String -> String -> IO (Maybe ByteString)
 readFileDB path name = do
-    content <- P.readFile $ buildDbFilePath path name
-    return $ pack content -- Transform to byteString and return
+        eitherContent <- try (P.readFile $ buildDbFilePath path name)
+        case (eitherContent :: Either IOError String) of 
+          Left _    -> return $ Nothing
+          Right val -> return $ Just $ pack val -- Transform to byteString and return
+    
 
 
 

@@ -1,13 +1,24 @@
-module App.Roster.Repository (findTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamsName) where
+{-# LANGUAGE DeriveDataTypeable #-}
+module App.Roster.Repository (findTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamsName, saveNewTeam) where
 
 import App.Roster.Types (Team(..))
 import App.Helper.FileDB(listEntities, findEntity, saveEntity)
+
+import Control.Exception
+import Data.Typeable
 
 findTeam :: String -> IO (Maybe Team)
 findTeam name = findEntity "Team" name           
 
 saveTeam :: Team -> IO ()
 saveTeam team = saveEntity "Team" (teamName team) team
+
+saveNewTeam :: Team -> IO (Either String ())
+saveNewTeam team = do
+            maybeTeam <- findTeam (teamName team)
+            case maybeTeam of
+                Nothing -> tryStr (saveTeam team)
+                Just _ -> return (Left "Team already exists!")
 
 saveMaybeTeam :: Maybe Team -> IO ()
 saveMaybeTeam Nothing     = return ()
@@ -19,5 +30,23 @@ findTeamAndMap mapper teamName = do
                             return $ mapper <$> maybeTeam
 
 getTeamsName :: IO [String]
-getTeamsName =  listEntities "Team"                           
+getTeamsName =  listEntities "Team"    
+
+
+-- Repo Exception types
+data RepoException = RepoException String
+    deriving (Typeable)
+
+instance Exception RepoException
+
+instance Show RepoException where
+    show (RepoException e) = show e
+
+-- Helper
+tryStr :: IO a -> IO (Either String a)
+tryStr io = do
+          result <- try io
+          case result of
+            Left e -> return $ Left $ show (e :: SomeException)
+            Right a -> return $ Right a
 

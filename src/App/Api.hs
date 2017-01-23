@@ -3,13 +3,17 @@ module App.Api (webApi) where
 
 import App.HomePageService (getHomePageText)
 import App.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage)
+import App.ErrorPageService (getErrorPage)
+
 
 import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties)
-import App.Roster.Repository (findTeam, findTeamAndMap, saveMaybeTeam, saveTeam, getTeamsName)
+import App.Roster.Repository (findTeam, findTeamAndMap, saveMaybeTeam, saveTeam, getTeamsName, saveNewTeam)
 import App.Roster.Types(Team(..), Person(..), newTeam, newPerson, addPersonToTeam)
+
 
 import Web.Scotty
 import Control.Monad.IO.Class
+import Control.Exception (SomeException)
 import Data.Aeson (ToJSON)
 import Data.Text.Lazy
 
@@ -39,6 +43,10 @@ webApi = do
   get "/web/team" $ do
     returnHtml $ getTeamListPage =<< getTeamsName
 
+  get "/web/error/:msg" $ do
+    errorMsg <- param "msg"
+    returnHtml $ getErrorPage errorMsg
+
   get "/web/team/:name" $ do
     tName <- param "name"
     returnHtml $ getHomePageText =<< findTeam tName
@@ -55,8 +63,10 @@ webApi = do
 
   post "/edit/team/" $ do
     teamName <- param "teamName"
-    liftToActionM $ saveTeam $ newTeam teamName
-    redirect $ pack $ "/web/edit/team/" ++ teamName
+    saveResult <- liftToActionM $ saveNewTeam $ newTeam teamName
+    case saveResult of
+        Left msg  -> redirect $ pack $ "/web/error/" ++ msg
+        Right _   -> redirect $ pack $ "/web/edit/team/" ++ teamName
 
   post "/edit/team/:name/add-member/" $ do
     teamName <- param "name"
@@ -72,7 +82,7 @@ webApi = do
     redirect $ pack $ "/web/team/" ++ name
 
 
------ Hepler funcitons        
+----- Hepler funcitons
 returnJson :: ToJSON a => IO a -> ActionM()
 returnJson ioV = do
     val <- liftAndCatchIO ioV

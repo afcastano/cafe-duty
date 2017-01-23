@@ -20,6 +20,7 @@ executable cafe-duty
   other-modules:       App.Api,
                        App.HomePageService,
                        App.TeamPageService,
+                       App.ErrorPageService,
                        App.Roster.Service,
                        App.Roster.RosterGeneration,
                        App.Roster.Repository,
