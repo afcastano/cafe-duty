@@ -1,11 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
-module App.Helper.FileDB (findEntity, saveEntity) where
+module App.Helper.FileDB (findEntity, saveEntity, listEntities) where
+
+import App.Helper.Lists (dropLast)
 
 import Data.Aeson (FromJSON, ToJSON, decode)
 import Data.Aeson.Encode.Pretty (encodePretty)
 import Data.ByteString.Lazy.Char8
 import Prelude as P
-import System.Directory
+import System.Directory (listDirectory, createDirectoryIfMissing)
 import Data.List as List
 
 findEntity :: FromJSON a => String -> String -> IO (Maybe a)
@@ -17,6 +19,11 @@ saveEntity :: ToJSON a => String -> String -> a -> IO () -- Consider returning t
 saveEntity entityKind entityId entity = do
                           let encodedEntity = encodePretty entity -- Encode the entity to JSON
                           writeFileDB entityKind entityId encodedEntity
+
+listEntities :: String -> IO [String]
+listEntities entityKind = do
+                          fileNames <- listDirectory $ buildDbDir entityKind
+                          return $ List.map (dropLast 5) fileNames
 
 
 -- Not exposed functions
@@ -39,5 +46,8 @@ readFileDB path name = do
 createDbDir :: String -> IO ()
 createDbDir path = createDirectoryIfMissing True ("db/"++path)
 
+buildDbDir :: String -> String
+buildDbDir relativePath = "db/"++relativePath
+
 buildDbFilePath :: String -> String -> String
-buildDbFilePath path name = "db/"++path++"/"++name++".json"
+buildDbFilePath path name = (buildDbDir path)++"/"++name++".json"

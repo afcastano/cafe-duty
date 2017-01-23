@@ -2,10 +2,10 @@
 module App.Api (webApi) where
 
 import App.HomePageService (getHomePageText)
-import App.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage)
+import App.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage)
 
 import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties)
-import App.Roster.Repository (findTeam, findTeamAndMap, saveMaybeTeam, saveTeam)
+import App.Roster.Repository (findTeam, findTeamAndMap, saveMaybeTeam, saveTeam, getTeamsName)
 import App.Roster.Types(Team(..), Person(..), newTeam, newPerson, addPersonToTeam)
 
 import Web.Scotty
@@ -33,6 +33,12 @@ webApi = do
     returnJson $ findTeamAndMap getAllDuties name
 
 -- Web pages
+  get "/" $ do
+    redirect "/web/team"
+
+  get "/web/team" $ do
+    returnHtml $ getTeamListPage =<< getTeamsName
+
   get "/web/team/:name" $ do
     tName <- param "name"
     returnHtml $ getHomePageText =<< findTeam tName

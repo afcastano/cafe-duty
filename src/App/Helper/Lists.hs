@@ -1,4 +1,4 @@
-module App.Helper.Lists (splitInHalf, rotate, replaceElem, transformElem, replaceIndex) where
+module App.Helper.Lists (splitInHalf, rotate, replaceElem, transformElem, replaceIndex, dropLast) where
 import Data.List as L
 import Data.Sequence
 import Data.Foldable (toList)
@@ -24,3 +24,6 @@ transformElem mapper elem list = replaceElem elem (mapper elem) list
 rotate :: Int -> [a] -> [a]
 rotate _ [] = []
 rotate positions xs = L.zipWith const (L.drop positions (L.cycle xs)) xs
+
+dropLast :: Int -> [a] -> [a]
+dropLast idx xs = L.take (L.length xs - idx) xs

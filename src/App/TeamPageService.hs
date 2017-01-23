@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module App.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage) where
+module App.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage) where
 
 import Text.Hastache
 import Text.Hastache.Context
@@ -21,8 +21,11 @@ getCompleteDutyPage = do
                   useTemplate "templates/complete_duty.html" context
 
 getEditTeamPage :: Maybe Team -> IO Text
-getEditTeamPage Nothing     = populatePage $ emptyDto "Not found"
-getEditTeamPage (Just team) = populatePage $ getDtoFromTeam team
+getEditTeamPage Nothing     = populateEditPage $ emptyDto "Not found"
+getEditTeamPage (Just team) = populateEditPage $ getDtoFromTeam team
+
+getTeamListPage :: [String] -> IO Text
+getTeamListPage names = populateTeamListPage names
 
 
 --- Helpers
@@ -37,13 +40,20 @@ emptyDto tName = EditTeamDto tName []
 getDtoFromTeam :: Team -> EditTeamDto
 getDtoFromTeam team = EditTeamDto (teamName team) (Prelude.map name $ members team)
 
-populatePage :: EditTeamDto -> IO Text
-populatePage dto = do
+populateEditPage :: EditTeamDto -> IO Text
+populateEditPage dto = do
                 let context "name"        = MuVariable $ tName dto
                     context "people"      = MuList $ Prelude.map (mkStrContext . mkListContext) (teamMembers dto)
                             where
                             mkListContext p = \"pName"  -> MuVariable $ p
                 useTemplate "templates/edit_team.html" context
+
+populateTeamListPage :: [String] -> IO Text
+populateTeamListPage names = do
+                let context "teams"      = MuList $ Prelude.map (mkStrContext . mkListContext) (names)
+                            where
+                            mkListContext teamName = \"tName"  -> MuVariable $ teamName
+                useTemplate "templates/view_teams.html" context                
 
 
 

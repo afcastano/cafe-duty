@@ -1,7 +1,7 @@
-module App.Roster.Repository (findTeam, findTeamAndMap, saveTeam, saveMaybeTeam) where
+module App.Roster.Repository (findTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamsName) where
 
 import App.Roster.Types (Team(..))
-import App.Helper.FileDB
+import App.Helper.FileDB(listEntities, findEntity, saveEntity)
 
 findTeam :: String -> IO (Maybe Team)
 findTeam name = findEntity "Team" name           
@@ -17,4 +17,7 @@ findTeamAndMap :: (Team -> a) -> String -> IO (Maybe a)
 findTeamAndMap mapper teamName = do
                             maybeTeam <- findTeam teamName
                             return $ mapper <$> maybeTeam
+
+getTeamsName :: IO [String]
+getTeamsName =  listEntities "Team"                           
 
