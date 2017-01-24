@@ -1,0 +1,16 @@
+{
+    "teamName": "RobustaTest1",
+    "members": [
+        {
+            "active": true,
+            "name": "TR",
+            "timesOnDuty": 0
+        },
+        {
+            "active": true,
+            "name": "RF",
+            "timesOnDuty": 0
+        }
+    ],
+    "rosterIndex": 0
+}

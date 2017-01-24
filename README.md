@@ -15,7 +15,7 @@ Generates a roster of pairs given a team of people.
 
 ## Deploy
  - To create a docker image to deploy: `docker build -t afcastano/hs-cafe-duty:latest .` this will create the image afcastano/hs-cafe-duty
- - to run the image: `docker run --rm -p 3000:3000 -v ${LOCAL_DB_PATH}:/db afcastano/hs-cafe-duty`
+ - to run the image: `docker run --rm -p 3000:3000 -v ${LOCAL_DB_PATH}:/cafe-duty/db afcastano/hs-cafe-duty`
  
 # Useful information:
 - install stack mac: `brew update` and then `brew install haskell-stack`

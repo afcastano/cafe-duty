@@ -6,14 +6,13 @@ import App.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage
 import App.ErrorPageService (getErrorPage)
 
 
-import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties)
-import App.Roster.Repository (findTeam, findTeamAndMap, saveMaybeTeam, saveTeam, getTeamsName, saveNewTeam)
+import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties, validateTeam)
+import App.Roster.Repository (getTeam, findTeam, findTeamAndMap, saveMaybeTeam, getTeamsName, saveNewTeam)
 import App.Roster.Types(Team(..), Person(..), newTeam, newPerson, addPersonToTeam)
 
 
 import Web.Scotty
 import Control.Monad.IO.Class
-import Control.Exception (SomeException)
 import Data.Aeson (ToJSON)
 import Data.Text.Lazy
 
@@ -36,7 +35,7 @@ webApi = do
     name <- param "name"
     returnJson $ findTeamAndMap getAllDuties name
 
--- Web pages
+-- Web pages api
   get "/" $ do
     redirect "/web/team"
 
@@ -48,8 +47,11 @@ webApi = do
     returnHtml $ getErrorPage errorMsg
 
   get "/web/team/:name" $ do
-    tName <- param "name"
-    returnHtml $ getHomePageText =<< findTeam tName
+    tName      <- param "name"
+    eitherTeam <- getValidTeam tName
+    case eitherTeam of
+        Left msg   -> redirect $ pack $ "/web/error/" ++ msg
+        Right team -> returnHtml $ getHomePageText team
 
   get "/web/edit/team/" $ do
     returnHtml $ getNewTeamPage
@@ -62,7 +64,7 @@ webApi = do
     returnHtml $ getCompleteDutyPage
 
   post "/edit/team/" $ do
-    teamName <- param "teamName"
+    teamName   <- param "teamName"
     saveResult <- liftToActionM $ saveNewTeam $ newTeam teamName
     case saveResult of
         Left msg  -> redirect $ pack $ "/web/error/" ++ msg
@@ -83,6 +85,12 @@ webApi = do
 
 
 ----- Hepler funcitons
+-- TODO this is messy. Refactor and extract
+getValidTeam :: String -> ActionM (Either String Team)
+getValidTeam name = do
+              eitherTeam <- liftToActionM $ getTeam name
+              liftAndCatchIO $ return $ validateTeam =<< eitherTeam
+
 returnJson :: ToJSON a => IO a -> ActionM()
 returnJson ioV = do
     val <- liftAndCatchIO ioV

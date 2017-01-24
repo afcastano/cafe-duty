@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module App.Roster.Repository (findTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamsName, saveNewTeam) where
+module App.Roster.Repository (findTeam, getTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamsName, saveNewTeam) where
 
 import App.Roster.Types (Team(..))
 import App.Helper.FileDB(listEntities, findEntity, saveEntity)
@@ -8,7 +8,12 @@ import Control.Exception
 import Data.Typeable
 
 findTeam :: String -> IO (Maybe Team)
-findTeam name = findEntity "Team" name           
+findTeam name = findEntity "Team" name
+
+getTeam :: String -> IO (Either String Team)
+getTeam name = do 
+            maybeTeam <- findTeam name
+            return $ toEither "Team does not exist" maybeTeam           
 
 saveTeam :: Team -> IO ()
 saveTeam team = saveEntity "Team" (teamName team) team
@@ -43,6 +48,10 @@ instance Show RepoException where
     show (RepoException e) = show e
 
 -- Helper
+toEither:: String -> Maybe a -> Either String a
+toEither msg Nothing = Left msg
+toEither _ (Just val) = Right val
+
 tryStr :: IO a -> IO (Either String a)
 tryStr io = do
           result <- try io

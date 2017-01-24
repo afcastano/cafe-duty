@@ -1,7 +1,6 @@
-module App.Roster.Service (currentDuty, nextDuty, getAllDuties, completeDuty) where
+module App.Roster.Service (currentDuty, nextDuty, getAllDuties, completeDuty, validateTeam) where
 
 import App.Roster.RosterGeneration (combineElements)
-import App.Roster.Repository (findTeam, saveTeam)
 import App.Roster.Types (Team(..), Person(..), increaseRosterIndex, increaseTimesOnDuty)
 import App.Helper.Lists (rotate, transformElem)
 
@@ -19,6 +18,12 @@ completeDuty :: Team -> Team
 completeDuty team = let updatedTeam = updateTimesOnDuty team
                     in
                     increaseRosterIndex updatedTeam
+
+validateTeam :: Team -> Either String Team
+validateTeam team 
+              | (length $ members team) < 2 = Left "A team should have at least two members!"
+              | otherwise                   = Right team
+
 
 
 

@@ -11,9 +11,8 @@ import App.Roster.Service(currentDuty, nextDuty)
 
 ---- UI specific stuff.
 --- home page
-getHomePageText :: Maybe Team -> IO Text
-getHomePageText Nothing     = populateHomePage $ emptyDto "Not found"
-getHomePageText (Just team) = populateHomePage $ getHomePageDtoFromTeam team
+getHomePageText :: Team -> IO Text
+getHomePageText team = populateHomePage $ getHomePageDtoFromTeam team
 
 
 --- Helpers
