@@ -55,7 +55,8 @@
             <h3 style="padding-left:20px">Teams</h3>
             <ul id="double" class="ulcolumn">
               {{#teams}}
-                <li><span style="display:inline-block;"><a href="/web/team/{{tName}}">{{tName}}</a></span></li>
+                <li><span style="display:inline-block; width: 120px;"><a href="/web/team/{{tName}}">{{tName}}</a></span>
+                <a href="/web/edit/team/{{tName}}">(edit)</a></li>
               {{/teams}}
             </ul>
           </div>

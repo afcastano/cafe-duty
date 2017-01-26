@@ -34,7 +34,7 @@
         {
             "active": true,
             "name": "Lars",
-            "timesOnDuty": 7
+            "timesOnDuty": 8
         },
         {
             "active": true,
@@ -45,7 +45,17 @@
             "active": true,
             "name": "Hiroshi",
             "timesOnDuty": 8
+        },
+        {
+            "active": true,
+            "name": "Joe",
+            "timesOnDuty": 0
+        },
+        {
+            "active": true,
+            "name": "myer",
+            "timesOnDuty": 1
         }
     ],
-    "rosterIndex": 35
+    "rosterIndex": 36
 }
