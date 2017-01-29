@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module App.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage) where
+module App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage) where
 
 import Text.Hastache
 import Text.Hastache.Context

@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module App.HomePageService (getHomePageText) where
+module App.Pages.HomePageService (getHomePageText) where
 
 import Text.Hastache
 import Text.Hastache.Context

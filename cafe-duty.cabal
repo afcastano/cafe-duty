@@ -18,9 +18,9 @@ executable cafe-duty
   main-is:             Main.hs
   default-language:    Haskell2010
   other-modules:       App.Api,
-                       App.HomePageService,
-                       App.TeamPageService,
-                       App.ErrorPageService,
+                       App.Pages.HomePageService,
+                       App.Pages.TeamPageService,
+                       App.Pages.ErrorPageService,
                        App.Roster.Service,
                        App.Roster.RosterGeneration,
                        App.Roster.Repository,

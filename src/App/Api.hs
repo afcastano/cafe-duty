@@ -1,9 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 module App.Api (webApi) where
 
-import App.HomePageService (getHomePageText)
-import App.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage)
-import App.ErrorPageService (getErrorPage)
+import App.Pages.HomePageService (getHomePageText)
+import App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage)
+import App.Pages.ErrorPageService (getErrorPage)
 
 
 import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties, validateTeam)

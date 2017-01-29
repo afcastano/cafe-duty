@@ -1,4 +1,4 @@
-module App.ErrorPageService (getErrorPage) where
+module App.Pages.ErrorPageService (getErrorPage) where
 
 import Text.Hastache
 import Text.Hastache.Context
