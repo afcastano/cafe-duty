@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module App.TeamDetails.Repository (findTeam, getTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamsName, saveNewTeam) where
+module App.TeamDetails.Repository (findTeam, getTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamNames, saveNewTeam) where
 
 import App.TeamDetails.Types (TeamDetails(..))
 import App.Helper.FileDB(listEntities, findEntity, saveEntity)
@@ -8,7 +8,7 @@ import Control.Exception
 import Data.Typeable
 
 findTeam :: String -> IO (Maybe TeamDetails)
-findTeam name = findEntity "Team" name
+findTeam name = findEntity "TeamDetails" name
 
 getTeam :: String -> IO (Either String TeamDetails)
 getTeam name = do 
@@ -16,7 +16,7 @@ getTeam name = do
             return $ toEither "Team does not exist" maybeTeam           
 
 saveTeam :: TeamDetails -> IO ()
-saveTeam team = saveEntity "Team" (teamName team) team
+saveTeam team = saveEntity "TeamDetails" (teamName team) team
 
 saveNewTeam :: TeamDetails -> IO (Either String ())
 saveNewTeam team = do
@@ -34,18 +34,8 @@ findTeamAndMap mapper teamName = do
                             maybeTeam <- findTeam teamName
                             return $ mapper <$> maybeTeam
 
-getTeamsName :: IO [String]
-getTeamsName =  listEntities "Team"    
-
-
--- Repo Exception types
-data RepoException = RepoException String
-    deriving (Typeable)
-
-instance Exception RepoException
-
-instance Show RepoException where
-    show (RepoException e) = show e
+getTeamNames :: IO [String]
+getTeamNames =  listEntities "TeamDetails"
 
 -- Helper
 toEither:: String -> Maybe a -> Either String a

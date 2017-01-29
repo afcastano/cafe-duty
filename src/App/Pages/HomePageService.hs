@@ -6,13 +6,15 @@ import Text.Hastache.Context
 import qualified Data.Text.Lazy.IO as TL
 import Data.Text.Lazy
 
-import App.TeamDetails.Types(TeamDetails(..), Person(..))
-import App.Roster.Service(currentDuty, nextDuty)
+import App.TeamDetails.Types as Team(TeamDetails(..), Person(..))
+
+import App.Roster.DomainService(currentDuty, nextDuty)
+import App.Roster.Types (TeamRoster(..), current, next)
 
 ---- UI specific stuff.
 --- home page
-getHomePageText :: TeamDetails -> IO Text
-getHomePageText team = populateHomePage $ getHomePageDtoFromTeam team
+getHomePageText :: TeamDetails -> TeamRoster -> IO Text
+getHomePageText team roster = populateHomePage $ getHomePageDtoFromTeam team roster
 
 
 --- Helpers
@@ -27,11 +29,11 @@ emptyDto :: String -> HomePageDto
 emptyDto tName = HomePageDto tName [] [] []
       
 
-getHomePageDtoFromTeam :: TeamDetails -> HomePageDto
-getHomePageDtoFromTeam team = let thisDuty    = name <$> currentDuty team
-                                  nxtDuty     = name <$> nextDuty team
-                                  teamMembers = members team
-                              in HomePageDto (teamName team) thisDuty nxtDuty teamMembers
+getHomePageDtoFromTeam :: TeamDetails -> TeamRoster -> HomePageDto
+getHomePageDtoFromTeam team roster = let thisDuty    = pairToList $ current roster
+                                         nxtDuty     = pairToList $ next roster
+                                         teamMembers = members team
+                              in HomePageDto (Team.teamName team) thisDuty nxtDuty teamMembers
 
 populateHomePage :: HomePageDto -> IO Text
 populateHomePage dto = do
@@ -50,3 +52,7 @@ populateHomePage dto = do
 
 useTemplate :: String -> (String -> MuType IO) -> IO Text
 useTemplate templateName context = hastacheFile defaultConfig templateName (mkStrContext context)
+
+-- TODO Remove. The model should be a pair.
+pairToList :: (a,a) -> [a]
+pairToList (fst, snd) = [fst, snd]

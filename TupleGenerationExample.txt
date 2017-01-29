@@ -27,6 +27,32 @@ http://stackoverflow.com/questions/41896889/algorithm-to-schedule-people-to-an-a
 25
 36
 
+With empty slot
+15
+26
+37
+4x
+
+12
+35
+46
+x7
+
+13
+42
+x5
+76
+
+14
+x3
+72
+65
+
+1x
+74
+63
+52
+
 With random disruptions!!!
 Theory: 
 To add person: keep track of the permutation in which the person was added. When reading, calculate all permutations up to that point and then add after the first pair. Then calculate next.

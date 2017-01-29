@@ -1,8 +1,11 @@
 {-# LANGUAGE DeriveGeneric #-}
-module App.TeamDetails.Types (Person(..), TeamDetails(..), increaseRosterIndex, increaseTimesOnDuty, newTeam, newPerson, addPersonToTeam) where
+module App.TeamDetails.Types (Person(..), TeamDetails(..), increaseTimesOnDuty, newTeam, newPerson, addPersonToTeam) where
+
+import App.Helper.Lists (transformElem)
 
 import Data.Aeson (FromJSON, ToJSON)
 import GHC.Generics
+import Data.List
 
 -- Types and instances
 data Person = Person {
@@ -17,29 +20,48 @@ instance Eq Person where
   Person n1 _ _ == Person n2 _ _ = n1 == n2
 
 -- Person functions
-
-increaseTimesOnDuty :: Person -> Person
-increaseTimesOnDuty p = p {timesOnDuty = (timesOnDuty p) + 1}
-
 newPerson :: String -> Person
 newPerson personName = Person personName True 0
 
 
+---- TeamDetails type
 data TeamDetails = TeamDetails {
     teamName :: String
   , members :: [Person]
-  , rosterIndex :: Int
 } deriving ( Generic, Show )
 
 instance ToJSON TeamDetails
 instance FromJSON TeamDetails
 
--- Team functions
-increaseRosterIndex :: TeamDetails -> TeamDetails
-increaseRosterIndex t = t {rosterIndex = (rosterIndex t) + 1}
-
+-- Functions
 newTeam :: String -> TeamDetails
-newTeam name = TeamDetails name [] 0
+newTeam name = TeamDetails name []
 
 addPersonToTeam :: Person -> TeamDetails -> TeamDetails
 addPersonToTeam person team = team {members = (members team)++[person]}
+
+-- TODO For the sake of studying, find another way to do this. Seems too imperative.
+increaseTimesOnDuty :: TeamDetails -> (String, String) -> TeamDetails
+increaseTimesOnDuty team (n1,n2) = let p1           = findPerson team n1
+                                       p2           = findPerson team n2
+                                       teamUpdated  = updatePersonOnTeam team p1
+                                       newTeam      = updatePersonOnTeam teamUpdated p2
+                                   in newTeam
+
+--- Private
+updatePersonOnTeam :: TeamDetails -> Maybe Person -> TeamDetails
+updatePersonOnTeam team Nothing  = team
+updatePersonOnTeam team (Just p) = team {members = transformElem increaseTimesOnDutyPerson p (members team)}
+
+increaseTimesOnDutyPerson :: Person -> Person
+increaseTimesOnDutyPerson p = p {timesOnDuty = (timesOnDuty p) + 1}
+
+findPerson :: TeamDetails -> String -> Maybe Person
+findPerson team pName = let people       = members team
+                            sameName val = (name val) == pName
+                        in  find sameName people
+
+
+
+
+

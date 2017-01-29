@@ -7,7 +7,7 @@ import Data.Aeson (FromJSON, ToJSON, decode)
 import Data.Aeson.Encode.Pretty (encodePretty)
 import Data.ByteString.Lazy.Char8
 import Prelude as P
-import System.Directory (listDirectory, createDirectoryIfMissing)
+import System.Directory (listDirectory, createDirectoryIfMissing, doesDirectoryExist)
 import Data.List as List
 import Control.Exception (try)
 
@@ -23,11 +23,16 @@ saveEntity entityKind entityId entity = do
 
 listEntities :: String -> IO [String]
 listEntities entityKind = do
-                          fileNames <- listDirectory $ buildDbDir entityKind
+                          fileNames <- getFileNamesSafe $ buildDbDir entityKind
                           return $ List.map (dropLast 5) fileNames
 
 
--- Not exposed functions
+-- PRIVATE
+getFileNamesSafe :: String -> IO [String]
+getFileNamesSafe path = do
+                    exists <- doesDirectoryExist path
+                    if exists then listDirectory path else return []
+
 -- File system manipulation
 writeFileDB :: String -> String -> ByteString -> IO ()
 writeFileDB path name content = do
