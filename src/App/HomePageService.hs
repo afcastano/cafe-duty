@@ -6,12 +6,12 @@ import Text.Hastache.Context
 import qualified Data.Text.Lazy.IO as TL
 import Data.Text.Lazy
 
-import App.Roster.Types(Team(..), Person(..))
+import App.Roster.Types(TeamDetails(..), Person(..))
 import App.Roster.Service(currentDuty, nextDuty)
 
 ---- UI specific stuff.
 --- home page
-getHomePageText :: Team -> IO Text
+getHomePageText :: TeamDetails -> IO Text
 getHomePageText team = populateHomePage $ getHomePageDtoFromTeam team
 
 
@@ -27,7 +27,7 @@ emptyDto :: String -> HomePageDto
 emptyDto tName = HomePageDto tName [] [] []
       
 
-getHomePageDtoFromTeam :: Team -> HomePageDto
+getHomePageDtoFromTeam :: TeamDetails -> HomePageDto
 getHomePageDtoFromTeam team = let thisDuty    = name <$> currentDuty team
                                   nxtDuty     = name <$> nextDuty team
                                   teamMembers = members team

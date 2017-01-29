@@ -8,7 +8,7 @@ import App.ErrorPageService (getErrorPage)
 
 import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties, validateTeam)
 import App.Roster.Repository (getTeam, findTeam, findTeamAndMap, saveMaybeTeam, getTeamsName, saveNewTeam)
-import App.Roster.Types(Team(..), Person(..), newTeam, newPerson, addPersonToTeam)
+import App.Roster.Types(TeamDetails(..), Person(..), newTeam, newPerson, addPersonToTeam)
 
 
 import Web.Scotty
@@ -86,7 +86,7 @@ webApi = do
 
 ----- Hepler funcitons
 -- TODO this is messy. Refactor and extract
-getValidTeam :: String -> ActionM (Either String Team)
+getValidTeam :: String -> ActionM (Either String TeamDetails)
 getValidTeam name = do
               eitherTeam <- liftToActionM $ getTeam name
               liftAndCatchIO $ return $ validateTeam =<< eitherTeam

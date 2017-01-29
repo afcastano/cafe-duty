@@ -1,35 +1,35 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 module App.Roster.Repository (findTeam, getTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamsName, saveNewTeam) where
 
-import App.Roster.Types (Team(..))
+import App.Roster.Types (TeamDetails(..))
 import App.Helper.FileDB(listEntities, findEntity, saveEntity)
 
 import Control.Exception
 import Data.Typeable
 
-findTeam :: String -> IO (Maybe Team)
+findTeam :: String -> IO (Maybe TeamDetails)
 findTeam name = findEntity "Team" name
 
-getTeam :: String -> IO (Either String Team)
+getTeam :: String -> IO (Either String TeamDetails)
 getTeam name = do 
             maybeTeam <- findTeam name
             return $ toEither "Team does not exist" maybeTeam           
 
-saveTeam :: Team -> IO ()
+saveTeam :: TeamDetails -> IO ()
 saveTeam team = saveEntity "Team" (teamName team) team
 
-saveNewTeam :: Team -> IO (Either String ())
+saveNewTeam :: TeamDetails -> IO (Either String ())
 saveNewTeam team = do
             maybeTeam <- findTeam (teamName team)
             case maybeTeam of
                 Nothing -> tryStr (saveTeam team)
                 Just _ -> return (Left "Team already exists!")
 
-saveMaybeTeam :: Maybe Team -> IO ()
+saveMaybeTeam :: Maybe TeamDetails -> IO ()
 saveMaybeTeam Nothing     = return ()
 saveMaybeTeam (Just team) = saveTeam team
 
-findTeamAndMap :: (Team -> a) -> String -> IO (Maybe a)
+findTeamAndMap :: (TeamDetails -> a) -> String -> IO (Maybe a)
 findTeamAndMap mapper teamName = do
                             maybeTeam <- findTeam teamName
                             return $ mapper <$> maybeTeam

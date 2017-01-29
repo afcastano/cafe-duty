@@ -6,7 +6,7 @@ import Text.Hastache.Context
 import qualified Data.Text.Lazy.IO as TL
 import Data.Text.Lazy
 
-import App.Roster.Types(Team(..), Person(..))
+import App.Roster.Types(TeamDetails(..), Person(..))
 
 ---- UI specific stuff.
 --- new team
@@ -20,7 +20,7 @@ getCompleteDutyPage = do
                   let context "name" = MuVariable $ "Create" -- DUH????
                   useTemplate "templates/complete_duty.html" context
 
-getEditTeamPage :: Maybe Team -> IO Text
+getEditTeamPage :: Maybe TeamDetails -> IO Text
 getEditTeamPage Nothing     = populateEditPage $ emptyDto "Not found"
 getEditTeamPage (Just team) = populateEditPage $ getDtoFromTeam team
 
@@ -37,7 +37,7 @@ data EditTeamDto = EditTeamDto {
 emptyDto :: String -> EditTeamDto 
 emptyDto tName = EditTeamDto tName []
 
-getDtoFromTeam :: Team -> EditTeamDto
+getDtoFromTeam :: TeamDetails -> EditTeamDto
 getDtoFromTeam team = EditTeamDto (teamName team) (Prelude.map name $ members team)
 
 populateEditPage :: EditTeamDto -> IO Text

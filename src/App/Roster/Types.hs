@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
-module App.Roster.Types (Person(..), Team(..), increaseRosterIndex, increaseTimesOnDuty, newTeam, newPerson, addPersonToTeam) where
+module App.Roster.Types (Person(..), TeamDetails(..), increaseRosterIndex, increaseTimesOnDuty, newTeam, newPerson, addPersonToTeam) where
 
 import Data.Aeson (FromJSON, ToJSON)
 import GHC.Generics
@@ -25,21 +25,21 @@ newPerson :: String -> Person
 newPerson personName = Person personName True 0
 
 
-data Team = Team {
+data TeamDetails = TeamDetails {
     teamName :: String
   , members :: [Person]
   , rosterIndex :: Int
 } deriving ( Generic, Show )
 
-instance ToJSON Team
-instance FromJSON Team
+instance ToJSON TeamDetails
+instance FromJSON TeamDetails
 
 -- Team functions
-increaseRosterIndex :: Team -> Team
+increaseRosterIndex :: TeamDetails -> TeamDetails
 increaseRosterIndex t = t {rosterIndex = (rosterIndex t) + 1}
 
-newTeam :: String -> Team
-newTeam name = Team name [] 0
+newTeam :: String -> TeamDetails
+newTeam name = TeamDetails name [] 0
 
-addPersonToTeam :: Person -> Team -> Team
+addPersonToTeam :: Person -> TeamDetails -> TeamDetails
 addPersonToTeam person team = team {members = (members team)++[person]}
