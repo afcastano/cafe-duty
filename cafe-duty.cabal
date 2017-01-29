@@ -23,8 +23,8 @@ executable cafe-duty
                        App.Pages.ErrorPageService,
                        App.Roster.Service,
                        App.Roster.RosterGeneration,
-                       App.Roster.Repository,
-                       App.Roster.Types,
+                       App.TeamDetails.Repository,
+                       App.TeamDetails.Types,
                        App.Helper.Lists,
                        App.Helper.FileDB
   build-depends:       base >= 4.7 && < 5,

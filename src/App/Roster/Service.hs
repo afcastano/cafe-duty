@@ -1,7 +1,7 @@
 module App.Roster.Service (currentDuty, nextDuty, getAllDuties, completeDuty, validateTeam) where
 
 import App.Roster.RosterGeneration (combineElements)
-import App.Roster.Types (TeamDetails(..), Person(..), increaseRosterIndex, increaseTimesOnDuty)
+import App.TeamDetails.Types (TeamDetails(..), Person(..), increaseRosterIndex, increaseTimesOnDuty)
 import App.Helper.Lists (rotate, transformElem)
 
 

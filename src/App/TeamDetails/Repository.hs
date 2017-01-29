@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module App.Roster.Repository (findTeam, getTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamsName, saveNewTeam) where
+module App.TeamDetails.Repository (findTeam, getTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamsName, saveNewTeam) where
 
-import App.Roster.Types (TeamDetails(..))
+import App.TeamDetails.Types (TeamDetails(..))
 import App.Helper.FileDB(listEntities, findEntity, saveEntity)
 
 import Control.Exception

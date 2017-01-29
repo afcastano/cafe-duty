@@ -6,7 +6,7 @@ import Text.Hastache.Context
 import qualified Data.Text.Lazy.IO as TL
 import Data.Text.Lazy
 
-import App.Roster.Types(TeamDetails(..), Person(..))
+import App.TeamDetails.Types(TeamDetails(..), Person(..))
 import App.Roster.Service(currentDuty, nextDuty)
 
 ---- UI specific stuff.

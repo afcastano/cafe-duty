@@ -7,8 +7,8 @@ import App.Pages.ErrorPageService (getErrorPage)
 
 
 import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties, validateTeam)
-import App.Roster.Repository (getTeam, findTeam, findTeamAndMap, saveMaybeTeam, getTeamsName, saveNewTeam)
-import App.Roster.Types(TeamDetails(..), Person(..), newTeam, newPerson, addPersonToTeam)
+import App.TeamDetails.Repository (getTeam, findTeam, findTeamAndMap, saveMaybeTeam, getTeamsName, saveNewTeam)
+import App.TeamDetails.Types(TeamDetails(..), Person(..), newTeam, newPerson, addPersonToTeam)
 
 
 import Web.Scotty

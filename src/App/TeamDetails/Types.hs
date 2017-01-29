@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
-module App.Roster.Types (Person(..), TeamDetails(..), increaseRosterIndex, increaseTimesOnDuty, newTeam, newPerson, addPersonToTeam) where
+module App.TeamDetails.Types (Person(..), TeamDetails(..), increaseRosterIndex, increaseTimesOnDuty, newTeam, newPerson, addPersonToTeam) where
 
 import Data.Aeson (FromJSON, ToJSON)
 import GHC.Generics
