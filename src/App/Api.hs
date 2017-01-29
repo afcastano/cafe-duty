@@ -5,9 +5,10 @@ import App.Pages.HomePageService (getHomePageText)
 import App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage)
 import App.Pages.ErrorPageService (getErrorPage)
 
+import App.Roster.DomainService (currentDuty, nextDuty)
+import App.Roster.AppService (getValidTeam, getTeamRoster, completeDuty)
 
-import App.Roster.Service (completeDuty, currentDuty, nextDuty, getAllDuties, validateTeam)
-import App.TeamDetails.Repository (getTeam, findTeam, findTeamAndMap, saveMaybeTeam, getTeamsName, saveNewTeam)
+import App.TeamDetails.Repository (getTeam, findTeam, findTeamAndMap, saveMaybeTeam, getTeamNames, saveNewTeam)
 import App.TeamDetails.Types(TeamDetails(..), Person(..), newTeam, newPerson, addPersonToTeam)
 
 
@@ -18,29 +19,13 @@ import Data.Text.Lazy
 
 webApi :: ScottyM()
 webApi = do
--- Rest Api
-  get "/team/:name" $ do
-    name <- param "name"
-    returnJson $ findTeam name
-
-  get "/team/:name/current-duty/" $ do
-    name <- param "name"
-    returnJson $ findTeamAndMap currentDuty name
-
-  get "/team/:name/next-duty/" $ do
-    name <- param "name"
-    returnJson $ findTeamAndMap nextDuty name
-
-  get "/team/:name/roster"  $ do
-    name <- param "name"
-    returnJson $ findTeamAndMap getAllDuties name
 
 -- Web pages api
   get "/" $ do
     redirect "/web/team"
 
   get "/web/team" $ do
-    returnHtml $ getTeamListPage =<< getTeamsName
+    returnHtml $ getTeamListPage =<< getTeamNames
 
   get "/web/error/:msg" $ do
     errorMsg <- param "msg"
@@ -48,10 +33,10 @@ webApi = do
 
   get "/web/team/:name" $ do
     tName      <- param "name"
-    eitherTeam <- getValidTeam tName
+    eitherTeam <- liftToActionM $ getValidTeam tName
     case eitherTeam of
-        Left msg   -> redirect $ pack $ "/web/error/" ++ msg
-        Right team -> returnHtml $ getHomePageText team
+        Left msg   -> redirectToError msg
+        Right team -> getHomePage team
 
   get "/web/edit/team/" $ do
     returnHtml $ getNewTeamPage
@@ -63,11 +48,12 @@ webApi = do
   get "/web/complete-duty" $ do
     returnHtml $ getCompleteDutyPage
 
+-- form actions
   post "/edit/team/" $ do
     teamName   <- param "teamName"
     saveResult <- liftToActionM $ saveNewTeam $ newTeam teamName
     case saveResult of
-        Left msg  -> redirect $ pack $ "/web/error/" ++ msg
+        Left msg  -> redirectToError msg
         Right _   -> redirect $ pack $ "/web/edit/team/" ++ teamName
 
   post "/edit/team/:name/add-member/" $ do
@@ -80,21 +66,19 @@ webApi = do
 
   post "/complete-duty" $ do
     name <- param "teamName"
-    liftToActionM $ saveMaybeTeam =<< findTeamAndMap completeDuty name
+    liftToActionM $ completeDuty name
     redirect $ pack $ "/web/team/" ++ name
 
 
 ----- Hepler funcitons
--- TODO this is messy. Refactor and extract
-getValidTeam :: String -> ActionM (Either String TeamDetails)
-getValidTeam name = do
-              eitherTeam <- liftToActionM $ getTeam name
-              liftAndCatchIO $ return $ validateTeam =<< eitherTeam
 
-returnJson :: ToJSON a => IO a -> ActionM()
-returnJson ioV = do
-    val <- liftAndCatchIO ioV
-    json val
+getHomePage :: TeamDetails -> ActionM()
+getHomePage team = do
+                teamRoster <- liftToActionM $ getTeamRoster team
+                returnHtml $ getHomePageText team teamRoster
+
+redirectToError :: String -> ActionM()
+redirectToError msg = redirect $ pack $ "/web/error/" ++ msg
 
 liftToActionM :: IO a -> ActionM a
 liftToActionM io = liftAndCatchIO io
