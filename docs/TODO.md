@@ -6,7 +6,6 @@
 
 ###UI
 - Make people box bigger in duty UI
-- Add link to create team in the home page
 
 ###Refactors
 - Make code less imperative
@@ -17,3 +16,4 @@
 
 ###Done
 + Handle errors
++ Add link to create team in the home page
