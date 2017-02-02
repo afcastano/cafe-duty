@@ -33,6 +33,8 @@ executable cafe-duty
                        App.TeamDetails.Repository,
                        App.TeamDetails.Types,
 
+                       App.Backup.BackupApi,
+
                        App.Helper.Lists,
                        App.Helper.FileDB
   build-depends:       base >= 4.7 && < 5,
