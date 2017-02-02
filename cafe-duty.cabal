@@ -22,6 +22,7 @@ executable cafe-duty
                        App.Pages.HomePageService,
                        App.Pages.TeamPageService,
                        App.Pages.ErrorPageService,
+                       App.Pages.BackupPageService,
 
                        App.Roster.AppService,
                        App.Roster.DomainService,
