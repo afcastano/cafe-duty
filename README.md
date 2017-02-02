@@ -1,5 +1,5 @@
 # Cafe duty
-Web application that, given a list of people, schedules a task that should be executed in pairs.
+Simple web application that, given a list of people, schedules a task that should be executed in pairs.
 Includes a dashboard to show the people currently assigned to the task.
 
 ## How to use
@@ -14,6 +14,7 @@ Includes a dashboard to show the people currently assigned to the task.
 - Navigate to http://localhost:3000
 
 ## Development
+- This is a Haskell application. You need to install [stack](https://docs.haskellstack.org/en/stable/README/).
 - First time usage: `stack setup`
 - build: `stack build`
 - run: `./run.sh`
