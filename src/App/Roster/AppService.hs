@@ -1,18 +1,26 @@
-module App.Roster.AppService (getValidTeam, getTeamRoster, completeDuty) where
+module App.Roster.AppService (getValidTeam, getTeamRoster, completeDuty, createNewTeam) where
 
 -- TODO Move to TeamDetails package
-import App.Roster.DomainService (validateTeam, createDefaultRoster)
+import App.Roster.DomainService (validateTeam, createDefaultRoster, validateTeamName)
 import App.Roster.Repository (findRoster, saveRoster)
 import App.Roster.Types as Roster (TeamRoster(..), updateToNextDay, current)
 
-import App.TeamDetails.Repository (getTeam, findTeam, saveTeam)
-import App.TeamDetails.Types as Team (TeamDetails(..), increaseTimesOnDuty)
+import App.TeamDetails.Repository (getTeam, findTeam, saveTeam, saveNewTeam)
+import App.TeamDetails.Types as Team (TeamDetails(..), increaseTimesOnDuty, newTeam)
 
 -- TODO Move to TeamDetails package
 getValidTeam :: String -> IO (Either String TeamDetails)
 getValidTeam name = do
               eitherTeam <- getTeam name
               return $ validateTeam =<< eitherTeam
+
+createNewTeam :: String -> IO (Either String TeamDetails)
+createNewTeam teamName = do
+                let eitherNewTeam = newTeam <$> validateTeamName teamName
+                case eitherNewTeam of
+                    Left msg   -> return $ Left msg
+                    Right team -> saveNewTeam team
+
 
 getTeamRoster :: TeamDetails -> IO TeamRoster
 getTeamRoster team = do

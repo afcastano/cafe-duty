@@ -6,10 +6,10 @@ import App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDu
 import App.Pages.ErrorPageService (getErrorPage)
 
 import App.Roster.DomainService (currentDuty, nextDuty)
-import App.Roster.AppService (getValidTeam, getTeamRoster, completeDuty)
+import App.Roster.AppService (getValidTeam, getTeamRoster, completeDuty, createNewTeam)
 
-import App.TeamDetails.Repository (findTeam, findTeamAndMap, saveMaybeTeam, getTeamNames, saveNewTeam)
-import App.TeamDetails.Types as Team (TeamDetails(..), Person(..), newTeam, newPerson, addPersonToTeam)
+import App.TeamDetails.Repository (findTeam, findTeamAndMap, saveMaybeTeam, getTeamNames)
+import App.TeamDetails.Types as Team (TeamDetails(..), Person(..), newPerson, addPersonToTeam)
 
 import App.Backup.BackupApi (backupApi)
 
@@ -50,8 +50,8 @@ webApi = do
 
 -- form actions
   post "/edit/team/" $ do
-    teamName   <- param "teamName"
-    saveResult <- liftToActionM $ saveNewTeam $ newTeam teamName
+    teamName <- param "teamName"
+    saveResult <- liftToActionM $ createNewTeam teamName
     case saveResult of
         Left msg  -> redirectToError msg
         Right _   -> redirect $ pack $ "/web/edit/team/" ++ teamName

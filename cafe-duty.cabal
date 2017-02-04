@@ -36,7 +36,8 @@ executable cafe-duty
                        App.Backup.BackupApi,
 
                        App.Helper.Lists,
-                       App.Helper.FileDB
+                       App.Helper.FileDB,
+                       App.Helper.Strings
   build-depends:       base >= 4.7 && < 5,
                        scotty,
                        hastache,

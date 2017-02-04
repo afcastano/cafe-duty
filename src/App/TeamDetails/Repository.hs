@@ -18,11 +18,11 @@ getTeam name = do
 saveTeam :: TeamDetails -> IO ()
 saveTeam team = saveEntity "TeamDetails" (teamName team) team
 
-saveNewTeam :: TeamDetails -> IO (Either String ())
+saveNewTeam :: TeamDetails -> IO (Either String TeamDetails)
 saveNewTeam team = do
             maybeTeam <- findTeam (teamName team)
             case maybeTeam of
-                Nothing -> tryStr (saveTeam team)
+                Nothing -> tryStr (saveTeam team >> return team)
                 Just _ -> return (Left "Team already exists!")
 
 saveMaybeTeam :: Maybe TeamDetails -> IO ()

@@ -37,6 +37,7 @@ instance FromJSON TeamDetails
 newTeam :: String -> TeamDetails
 newTeam name = TeamDetails name []
 
+-- TODO Validate person does not exist
 addPersonToTeam :: Person -> TeamDetails -> TeamDetails
 addPersonToTeam person team = team {members = (members team)++[person]}
 
