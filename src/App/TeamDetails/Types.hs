@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
-module App.TeamDetails.Types (Person(..), TeamDetails(..), increaseTimesOnDuty, newTeam, newPerson, addPersonToTeam) where
+module App.TeamDetails.Types (Person(..), TeamDetails(..), increaseTimesOnDuty, newTeam, newPerson, addPersonToTeam, findPerson) where
 
 import App.Helper.Lists (transformElem)
 
@@ -49,6 +49,12 @@ increaseTimesOnDuty team (n1,n2) = let p1           = findPerson team n1
                                        newTeam      = updatePersonOnTeam teamUpdated p2
                                    in newTeam
 
+findPerson :: TeamDetails -> String -> Maybe Person
+findPerson team pName = let people       = members team
+                            sameName val = (name val) == pName
+                        in  find sameName people
+
+
 --- Private
 updatePersonOnTeam :: TeamDetails -> Maybe Person -> TeamDetails
 updatePersonOnTeam team Nothing  = team
@@ -56,12 +62,6 @@ updatePersonOnTeam team (Just p) = team {members = transformElem increaseTimesOn
 
 increaseTimesOnDutyPerson :: Person -> Person
 increaseTimesOnDutyPerson p = p {timesOnDuty = (timesOnDuty p) + 1}
-
-findPerson :: TeamDetails -> String -> Maybe Person
-findPerson team pName = let people       = members team
-                            sameName val = (name val) == pName
-                        in  find sameName people
-
 
 
 

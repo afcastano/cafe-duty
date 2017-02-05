@@ -1,9 +1,16 @@
-module App.Roster.DomainService (currentDuty, nextDuty, validateTeam, createDefaultRoster, validateTeamName) where
+module App.Roster.DomainService (
+    currentDuty,
+    nextDuty,
+    validateTeam,
+    createDefaultRoster,
+    validateTeamName,
+    validatePersonName,
+    tryAddPersonToTeam) where
 
 import App.Roster.RosterGeneration (combineElements, generateInitialRoster, generateNextRoster)
 import App.Roster.Types (TeamRoster(..))
 
-import App.TeamDetails.Types as Team (TeamDetails(..), Person(..), increaseTimesOnDuty)
+import App.TeamDetails.Types as Team (TeamDetails(..), Person(..), increaseTimesOnDuty, findPerson, addPersonToTeam)
 import App.Helper.Lists (rotate, transformElem)
 import App.Helper.Strings (isEmpty)
 
@@ -24,6 +31,17 @@ validateTeamName :: String -> Either String String
 validateTeamName teamName
               | isEmpty teamName    = Left "Please enter a non-empty name for the team!"
               | otherwise           = Right teamName
+
+validatePersonName :: String -> Either String String
+validatePersonName personName
+              | isEmpty personName = Left "Please enter a non-empty name for the person!"
+              | otherwise          = Right personName
+
+tryAddPersonToTeam :: TeamDetails -> Person -> Either String TeamDetails
+tryAddPersonToTeam team person =
+                case (findPerson team (name person)) of
+                    Nothing -> Right $ addPersonToTeam person team
+                    _       -> Left "There is already a member with that name!"
 
 createDefaultRoster :: TeamDetails -> TeamRoster
 createDefaultRoster team = let names         = map name $ members team

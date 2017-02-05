@@ -8,6 +8,7 @@
 - Make people box bigger in duty UI
 
 ###Refactors
+- Find the difference between Domain Services and Types files.
 - Make code less imperative
 - Review architecture
 - Create a DBResult monad instead of IO Maybe

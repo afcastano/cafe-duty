@@ -6,7 +6,7 @@ import App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDu
 import App.Pages.ErrorPageService (getErrorPage)
 
 import App.Roster.DomainService (currentDuty, nextDuty)
-import App.Roster.AppService (getValidTeam, getTeamRoster, completeDuty, createNewTeam)
+import App.Roster.AppService (getValidTeam, getTeamRoster, completeDuty, createNewTeam, findTeamAndAddPerson)
 
 import App.TeamDetails.Repository (findTeam, findTeamAndMap, saveMaybeTeam, getTeamNames)
 import App.TeamDetails.Types as Team (TeamDetails(..), Person(..), newPerson, addPersonToTeam)
@@ -57,11 +57,12 @@ webApi = do
         Right _   -> redirect $ pack $ "/web/edit/team/" ++ teamName
 
   post "/edit/team/:name/add-member/" $ do
-    teamName <- param "name"
+    teamName   <- param "name"
     personName <- param "personName"
-    let person = newPerson personName
-    liftToActionM $ saveMaybeTeam =<< findTeamAndMap (addPersonToTeam person) teamName
-    redirect $ pack $ "/web/edit/team/" ++ teamName
+    result     <- liftToActionM $ findTeamAndAddPerson personName teamName
+    case result of
+        Left msg -> redirectToError msg
+        Right _  -> redirect $ pack $ "/web/edit/team/" ++ teamName
 
 
   post "/complete-duty" $ do
