@@ -45,9 +45,6 @@ webApi = do
     tName <- param "name"
     returnHtml $ getEditTeamPage =<< findTeam tName
 
-  get "/web/complete-duty" $ do
-    returnHtml $ getCompleteDutyPage
-
 -- form actions
   post "/edit/team/" $ do
     teamName <- param "teamName"
@@ -65,7 +62,7 @@ webApi = do
         Right _  -> redirect $ pack $ "/web/edit/team/" ++ teamName
 
 
-  post "/complete-duty" $ do
+  get "/complete-duty/:teamName" $ do
     name <- param "teamName"
     liftToActionM $ completeDuty name
     redirect $ pack $ "/web/team/" ++ name

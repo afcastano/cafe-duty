@@ -5,7 +5,6 @@ Includes a dashboard to show the people currently assigned to the task.
 ## How to use
 - **Create a Team:** Navigate to `<your-host>:3000/` and click on `New team`. Follow the instructions.
 - **Show Dashboard:** Navigate to `<your-host>:3000/web/team/<Your team name>`
-- **Assign next pair of people:** Navigate to `<your-host>:3000/web/complete-duty`, enter the team name and click `Complete`
 
 ## How to install
 - Install Docker. Instructions [here](https://docs.docker.com/engine/installation/)

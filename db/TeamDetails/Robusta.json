@@ -9,17 +9,17 @@
         {
             "active": true,
             "name": "Lars",
-            "timesOnDuty": 0
+            "timesOnDuty": 1
         },
         {
             "active": true,
             "name": "James",
-            "timesOnDuty": 0
+            "timesOnDuty": 1
         },
         {
             "active": true,
             "name": "Joe",
-            "timesOnDuty": 0
+            "timesOnDuty": 1
         },
         {
             "active": true,
@@ -34,17 +34,17 @@
         {
             "active": true,
             "name": "Vuthy",
-            "timesOnDuty": 0
+            "timesOnDuty": 1
         },
         {
             "active": true,
             "name": "Jeremy",
-            "timesOnDuty": 0
+            "timesOnDuty": 1
         },
         {
             "active": true,
             "name": "Zsofi",
-            "timesOnDuty": 0
+            "timesOnDuty": 1
         }
     ]
 }
