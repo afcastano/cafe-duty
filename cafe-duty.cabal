@@ -30,6 +30,7 @@ executable cafe-duty
                        App.Roster.Types,
                        App.Roster.Repository,
 
+                       App.TeamDetails.AppService,
                        App.TeamDetails.Repository,
                        App.TeamDetails.Types,
 

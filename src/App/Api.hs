@@ -6,8 +6,9 @@ import App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDu
 import App.Pages.ErrorPageService (getErrorPage)
 
 import App.Roster.DomainService (currentDuty, nextDuty)
-import App.Roster.AppService (getValidTeam, getTeamRoster, completeDuty, createNewTeam, findTeamAndAddPerson)
+import App.Roster.AppService (getTeamRoster, completeDuty)
 
+import App.TeamDetails.AppService (getValidTeam, createNewTeam, findTeamAndAddPerson)
 import App.TeamDetails.Repository (findTeam, findTeamAndMap, saveMaybeTeam, getTeamNames)
 import App.TeamDetails.Types as Team (TeamDetails(..), Person(..), newPerson, addPersonToTeam)
 
@@ -61,11 +62,16 @@ webApi = do
         Left msg -> redirectToError msg
         Right _  -> redirect $ pack $ "/web/edit/team/" ++ teamName
 
-
+  -- TODO change the next two gets to posts
   get "/complete-duty/:teamName" $ do
     name <- param "teamName"
     liftToActionM $ completeDuty name
     redirect $ pack $ "/web/team/" ++ name
+
+--  get "/delete-team/:teamName" $ do
+--    name <- param "teamName"
+--    liftToActionM $ deleteTeam name
+--    redirect $ pack $ "/web/team"
 
 -- backup api
   backupApi
