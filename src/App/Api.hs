@@ -7,9 +7,10 @@ import App.Pages.ErrorPageService (getErrorPage)
 
 import App.Roster.DomainService (currentDuty, nextDuty)
 import App.Roster.AppService (getTeamRoster, completeDuty)
+import App.Roster.Repository (deleteRoster)
 
 import App.TeamDetails.AppService (getValidTeam, createNewTeam, findTeamAndAddPerson)
-import App.TeamDetails.Repository (findTeam, findTeamAndMap, saveMaybeTeam, getTeamNames)
+import App.TeamDetails.Repository (findTeam, findTeamAndMap, saveMaybeTeam, getTeamNames, deleteTeam)
 import App.TeamDetails.Types as Team (TeamDetails(..), Person(..), newPerson, addPersonToTeam)
 
 import App.Backup.BackupApi (backupApi)
@@ -68,10 +69,11 @@ webApi = do
     liftToActionM $ completeDuty name
     redirect $ pack $ "/web/team/" ++ name
 
---  get "/delete-team/:teamName" $ do
---    name <- param "teamName"
---    liftToActionM $ deleteTeam name
---    redirect $ pack $ "/web/team"
+  get "/delete-team/:teamName" $ do
+    name <- param "teamName"
+    liftToActionM $ deleteTeam name
+    liftToActionM $ deleteRoster name
+    redirect $ pack $ "/web/team"
 
 -- backup api
   backupApi

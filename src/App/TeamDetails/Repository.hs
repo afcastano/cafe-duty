@@ -1,8 +1,8 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module App.TeamDetails.Repository (findTeam, getTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamNames, saveNewTeam) where
+module App.TeamDetails.Repository (findTeam, getTeam, findTeamAndMap, saveTeam, saveMaybeTeam, getTeamNames, saveNewTeam, deleteTeam) where
 
 import App.TeamDetails.Types (TeamDetails(..))
-import App.Helper.FileDB(listEntities, findEntity, saveEntity)
+import App.Helper.FileDB(listEntities, findEntity, saveEntity, deleteEntity)
 
 import Control.Exception
 import Data.Typeable
@@ -28,6 +28,9 @@ saveNewTeam team = do
 saveMaybeTeam :: Maybe TeamDetails -> IO ()
 saveMaybeTeam Nothing     = return ()
 saveMaybeTeam (Just team) = saveTeam team
+
+deleteTeam :: String -> IO ()
+deleteTeam teamName = deleteEntity "TeamDetails" teamName
 
 findTeamAndMap :: (TeamDetails -> a) -> String -> IO (Maybe a)
 findTeamAndMap mapper teamName = do

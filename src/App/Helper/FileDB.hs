@@ -1,15 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
-module App.Helper.FileDB (findEntity, saveEntity, listEntities) where
+module App.Helper.FileDB (findEntity, saveEntity, listEntities, deleteEntity) where
 
 import App.Helper.Lists (dropLast)
 
 import Data.Aeson (FromJSON, ToJSON, decode)
 import Data.Aeson.Encode.Pretty (encodePretty)
 import Data.ByteString.Lazy.Char8
-import Prelude as P
-import System.Directory (listDirectory, createDirectoryIfMissing, doesDirectoryExist)
+import Prelude as P hiding (catch)
+import System.Directory (listDirectory, createDirectoryIfMissing, doesDirectoryExist, removeFile)
 import Data.List as List
 import Control.Exception (try)
+import System.IO.Error hiding (catch)
+import Control.Exception
 
 findEntity :: FromJSON a => String -> String -> IO (Maybe a)
 findEntity entityKind name = do
@@ -25,6 +27,10 @@ listEntities :: String -> IO [String]
 listEntities entityKind = do
                           fileNames <- getFileNamesSafe $ buildDbDir entityKind
                           return $ List.map (dropLast 5) fileNames
+
+deleteEntity :: String -> String -> IO ()
+deleteEntity entityKind name = removeIfExists $ buildDbFilePath entityKind name
+
 
 
 -- PRIVATE
@@ -50,6 +56,11 @@ readFileDB path name = do
           Right val -> return $ Just $ pack val -- Transform to byteString and return
     
 
+removeIfExists :: String -> IO ()
+removeIfExists fileName = removeFile fileName `catch` handleExists
+  where handleExists e
+          | isDoesNotExistError e = return ()
+          | otherwise = throwIO e
 
 
 createDbDir :: String -> IO ()
