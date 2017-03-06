@@ -23,7 +23,12 @@ transformElem mapper elem list = replaceElem elem (mapper elem) list
 
 rotate :: Int -> [a] -> [a]
 rotate _ [] = []
-rotate positions xs = L.zipWith const (L.drop positions (L.cycle xs)) xs
+rotate 0 xs = xs
+rotate positions xs
+    | positions > 0 = L.zipWith const (L.drop positions (L.cycle xs)) xs
+    | positions < 0 = let reversed = L.reverse xs
+                          rotated  = rotate (abs positions) reversed
+                      in L.reverse rotated
 
 dropLast :: Int -> [a] -> [a]
 dropLast idx xs = L.take (L.length xs - idx) xs

@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric #-}
-module App.Roster.Types ( TeamRoster(..), current, next, updateToNextDay) where
+module App.Roster.Types ( TeamRoster(..), current, next, increaseRosterIndex, decreaseRosterIndex) where
 
-import App.Roster.RosterGeneration (generateNextRoster)
+import App.Roster.RosterGeneration (generateNextRoster, generatePreviousRoster)
 
 import Data.Aeson (FromJSON, ToJSON)
 import Data.List
@@ -30,16 +30,28 @@ next :: TeamRoster -> (String, String)
 next roster = let idx = 1 + pairIndex roster
               in getPair idx roster
 
-updateToNextDay :: TeamRoster -> TeamRoster
-updateToNextDay roster
+increaseRosterIndex :: TeamRoster -> TeamRoster
+increaseRosterIndex roster
         | (pairIndex roster) + 1 < lengthCurrentRoster roster = roster {pairIndex = (pairIndex roster) + 1}
-        | otherwise                                           = generateNewRoster roster
+        | otherwise                                           = calculateNextRoster roster
+
+decreaseRosterIndex :: TeamRoster -> TeamRoster
+decreaseRosterIndex roster
+        | (pairIndex roster) - 1 >= 0 = roster {pairIndex = (pairIndex roster) - 1}
+        | otherwise                   = calculatePreviousRoster roster
 
 -- PRIVATE
-generateNewRoster :: TeamRoster -> TeamRoster
-generateNewRoster roster = let newCurrent = nextRoster roster
-                               newNext = generateNextRoster newCurrent
-                           in roster {currentRoster = newCurrent, nextRoster = newNext, pairIndex = 0}
+calculateNextRoster :: TeamRoster -> TeamRoster
+calculateNextRoster roster = let newCurrent = nextRoster roster
+                                 newNext    = generateNextRoster newCurrent
+                             in roster {currentRoster = newCurrent, nextRoster = newNext, pairIndex = 0}
+
+calculatePreviousRoster :: TeamRoster -> TeamRoster
+calculatePreviousRoster roster = let newNext    = currentRoster roster
+                                     newCurrent = generatePreviousRoster $ newNext
+                                     newIdx     = (lengthCurrentRoster roster) - 1
+                                 in roster {currentRoster = newCurrent, nextRoster = newNext, pairIndex = newIdx}
+
 
 getPair :: Int -> TeamRoster -> (String, String)
 getPair idx roster

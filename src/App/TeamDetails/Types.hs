@@ -1,5 +1,13 @@
 {-# LANGUAGE DeriveGeneric #-}
-module App.TeamDetails.Types (Person(..), TeamDetails(..), increaseTimesOnDuty, newTeam, newPerson, addPersonToTeam, findPerson) where
+module App.TeamDetails.Types (
+        Person(..)
+    ,   TeamDetails(..)
+    ,   increaseTimesOnDuty
+    ,   decreaseTimesOnDuty
+    ,   newTeam
+    ,   newPerson
+    ,   addPersonToTeam
+    ,   findPerson) where
 
 import App.Helper.Lists (transformElem)
 
@@ -42,11 +50,19 @@ addPersonToTeam :: Person -> TeamDetails -> TeamDetails
 addPersonToTeam person team = team {members = (members team)++[person]}
 
 -- TODO For the sake of studying, find another way to do this. Seems too imperative.
+-- Maybe transform Maybe Person into Maybe team and chain
 increaseTimesOnDuty :: TeamDetails -> (String, String) -> TeamDetails
 increaseTimesOnDuty team (n1,n2) = let p1           = findPerson team n1
                                        p2           = findPerson team n2
-                                       teamUpdated  = updatePersonOnTeam team p1
-                                       newTeam      = updatePersonOnTeam teamUpdated p2
+                                       teamUpdated  = increaseMaybePerson team p1
+                                       newTeam      = increaseMaybePerson teamUpdated p2
+                                   in newTeam
+
+decreaseTimesOnDuty :: TeamDetails -> (String, String) -> TeamDetails
+decreaseTimesOnDuty team (n1,n2) = let p1           = findPerson team n1
+                                       p2           = findPerson team n2
+                                       teamUpdated  = decreaseMaybePerson team p1
+                                       newTeam      = decreaseMaybePerson teamUpdated p2
                                    in newTeam
 
 findPerson :: TeamDetails -> String -> Maybe Person
@@ -56,12 +72,21 @@ findPerson team pName = let people       = members team
 
 
 --- Private
-updatePersonOnTeam :: TeamDetails -> Maybe Person -> TeamDetails
-updatePersonOnTeam team Nothing  = team
-updatePersonOnTeam team (Just p) = team {members = transformElem increaseTimesOnDutyPerson p (members team)}
+increaseMaybePerson :: TeamDetails -> Maybe Person -> TeamDetails
+increaseMaybePerson team Nothing  = team
+increaseMaybePerson team (Just p) = team {members = transformElem increaseTimesOnDutyPerson p (members team)}
 
 increaseTimesOnDutyPerson :: Person -> Person
 increaseTimesOnDutyPerson p = p {timesOnDuty = (timesOnDuty p) + 1}
+
+decreaseMaybePerson :: TeamDetails -> Maybe Person -> TeamDetails
+decreaseMaybePerson team Nothing  = team
+decreaseMaybePerson team (Just p) = team {members = transformElem decreaseTimesOnDutyPerson p (members team)}
+
+decreaseTimesOnDutyPerson :: Person -> Person
+decreaseTimesOnDutyPerson p
+                        | (timesOnDuty p) <= 0  = p
+                        | otherwise             = p {timesOnDuty = (timesOnDuty p) - 1}
 
 
 

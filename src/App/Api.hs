@@ -5,7 +5,7 @@ import App.Pages.HomePageService (getHomePageText)
 import App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage)
 import App.Pages.ErrorPageService (getErrorPage)
 
-import App.Roster.AppService (getTeamRoster, completeDuty)
+import App.Roster.AppService (getTeamRoster, completeDuty, revertDuty)
 import App.Roster.Repository (deleteRoster)
 
 import App.TeamDetails.AppService (getValidTeam, createNewTeam, findTeamAndAddPerson)
@@ -66,6 +66,11 @@ webApi = do
   get "/complete-duty/:teamName" $ do
     name <- param "teamName"
     liftToActionM $ completeDuty name
+    redirect $ pack $ "/web/team/" ++ name
+
+  get "/revert-to-previous-duty/:teamName" $ do
+    name <- param "teamName"
+    liftToActionM $ revertDuty name
     redirect $ pack $ "/web/team/" ++ name
 
   get "/delete-team/:teamName" $ do

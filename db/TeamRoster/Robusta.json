@@ -2,6 +2,29 @@
     "currentRoster": [
         [
             "Andres",
+            "Paul"
+        ],
+        [
+            "Lars",
+            "Vuthy"
+        ],
+        [
+            "James",
+            "Jeremy"
+        ],
+        [
+            "Joe",
+            "Zsofi"
+        ],
+        [
+            "Dan",
+            ""
+        ]
+    ],
+    "teamName": "Robusta",
+    "nextRoster": [
+        [
+            "Andres",
             "Lars"
         ],
         [
@@ -21,28 +44,5 @@
             "Zsofi"
         ]
     ],
-    "teamName": "Robusta",
-    "nextRoster": [
-        [
-            "Andres",
-            "James"
-        ],
-        [
-            "Joe",
-            "Lars"
-        ],
-        [
-            "Dan",
-            "Paul"
-        ],
-        [
-            "",
-            "Vuthy"
-        ],
-        [
-            "Zsofi",
-            "Jeremy"
-        ]
-    ],
-    "pairIndex": 3
+    "pairIndex": 0
 }

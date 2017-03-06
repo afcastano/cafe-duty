@@ -1,4 +1,4 @@
-module App.Roster.RosterGeneration (generateInitialRoster, generateNextRoster) where
+module App.Roster.RosterGeneration (generateInitialRoster, generateNextRoster, generatePreviousRoster) where
 import App.Helper.Lists(splitInHalf, replaceIndex, rotate)
 
 -- Roster generation algorthm based on:
@@ -21,12 +21,12 @@ generateNextRoster roster = let (l1, l2)       = unzip roster             -- [1,
                             in  zip newL1 (reverse newL2)                 -- (1,2)(3,4)(6,5)
 
 -- Given the current roster, generates the previous permutation.
-generatePreviousRoster :: [(a,a)] -> [(a,a)]                                  -- given (1,4)(2,5)(3,6)
-generatePreviousRoster roster = let (l1, l2)       = unzip roster             -- [1,2,3][4,5,6]
-                                    head:xs        = l1 ++ (reverse l2)       -- 1 : [2,3,6,5,4]
-                                    rotatedList    = head:(rotate (-1) xs)    -- [1,3,6,5,4,2]
-                                    (newL1, newL2) = splitInHalf rotatedList  -- ([1,3,6],[5,4,2])
-                                in  zip newL1 (reverse newL2)                 -- (1,2)(3,4)(6,5)
+generatePreviousRoster :: [(a,a)] -> [(a,a)]                                  -- given (1,2)(3,4)(6,5)
+generatePreviousRoster roster = let (l1, l2)       = unzip roster             -- [1,3,6][2,4,5]
+                                    head:xs        = l1 ++ (reverse l2)       -- 1 : [3,6,5,4,2]
+                                    rotatedList    = head:(rotate (-1) xs)    -- [1,2,3,6,5,4]
+                                    (newL1, newL2) = splitInHalf rotatedList  -- ([1,2,3],[6,5,4])
+                                in  zip newL1 (reverse newL2)                 -- (1,4)(2,5)(3,6)
 
 
 
