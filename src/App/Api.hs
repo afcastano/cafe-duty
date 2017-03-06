@@ -5,7 +5,6 @@ import App.Pages.HomePageService (getHomePageText)
 import App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage)
 import App.Pages.ErrorPageService (getErrorPage)
 
-import App.Roster.DomainService (currentDuty, nextDuty)
 import App.Roster.AppService (getTeamRoster, completeDuty)
 import App.Roster.Repository (deleteRoster)
 

@@ -8,7 +8,6 @@ import Data.Text.Lazy
 
 import App.TeamDetails.Types as Team(TeamDetails(..), Person(..))
 
-import App.Roster.DomainService(currentDuty, nextDuty)
 import App.Roster.Types (TeamRoster(..), current, next)
 
 ---- UI specific stuff.

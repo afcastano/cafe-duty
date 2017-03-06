@@ -1,10 +1,10 @@
 module App.Roster.AppService (getTeamRoster, completeDuty) where
 
--- TODO Move to TeamDetails package
 import App.Roster.DomainService (createDefaultRoster)
 import App.Roster.Repository (findRoster, saveRoster)
 import App.Roster.Types as Roster (TeamRoster(..), updateToNextDay, current)
 
+-- TODO Move to TeamDetails package
 import App.TeamDetails.Repository (findTeam, saveTeam)
 import App.TeamDetails.Types as Team (TeamDetails(..), Person(..), increaseTimesOnDuty, newTeam, newPerson)
 

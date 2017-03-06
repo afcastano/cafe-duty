@@ -50,14 +50,14 @@ getPair idx roster
 lengthCurrentRoster :: TeamRoster -> Int
 lengthCurrentRoster roster = length (safeCurrentRoster roster)
 
-filterEmpty :: [(String, String)] -> [(String, String)]
-filterEmpty list = let nonEmpty (s1, s2) = s1 /= "" && s2 /= ""
-                   in filter nonEmpty list
+filterOutEmpty :: [(String, String)] -> [(String, String)]
+filterOutEmpty list = let nonEmpty (s1, s2) = s1 /= "" && s2 /= ""
+                      in filter nonEmpty list
 
 -- Current roster with no empty tuples
 safeCurrentRoster :: TeamRoster -> [(String, String)]
-safeCurrentRoster roster = filterEmpty $ currentRoster roster
+safeCurrentRoster roster = filterOutEmpty $ currentRoster roster
 
 safeNextRoster :: TeamRoster -> [(String, String)]
-safeNextRoster roster = filterEmpty $ nextRoster roster
+safeNextRoster roster = filterOutEmpty $ nextRoster roster
 
