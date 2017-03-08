@@ -5,7 +5,7 @@ import App.Pages.HomePageService (getHomePageText)
 import App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage)
 import App.Pages.ErrorPageService (getErrorPage)
 
-import App.Roster.AppService (getTeamRoster, completeDuty, revertDuty)
+import App.Roster.AppService (getTeamRoster, completeDuty, revertDuty, skipMember)
 import App.Roster.Repository (deleteRoster)
 
 import App.TeamDetails.AppService (getValidTeam, createNewTeam, findTeamAndAddPerson)
@@ -62,22 +62,26 @@ webApi = do
         Left msg -> redirectToError msg
         Right _  -> redirect $ pack $ "/web/edit/team/" ++ teamName
 
-  -- TODO change the next two gets to posts
+  -- TODO change the next  gets to posts
   get "/complete-duty/:teamName" $ do
     name <- param "teamName"
-    liftToActionM $ completeDuty name
-    redirect $ pack $ "/web/team/" ++ name
+    runAndRedirect (completeDuty name) ("/web/team/" ++ name)
 
   get "/revert-to-previous-duty/:teamName" $ do
     name <- param "teamName"
-    liftToActionM $ revertDuty name
-    redirect $ pack $ "/web/team/" ++ name
+    runAndRedirect (revertDuty name) ("/web/team/" ++ name)
+
+  get "/skip-member/:memberName/team/:teamName" $ do
+    tName <- param "teamName"
+    memberName <- param "memberName"
+    eitherTeam <- liftToActionM $ getValidTeam tName
+    case eitherTeam of
+        Left msg   -> redirectToError msg
+        Right team -> runAndRedirect (skipMember team memberName) ("/web/team/" ++ tName)
 
   get "/delete-team/:teamName" $ do
     name <- param "teamName"
-    liftToActionM $ deleteTeam name
-    liftToActionM $ deleteRoster name
-    redirect $ pack $ "/web/team"
+    runAndRedirect ((deleteTeam name) >> deleteRoster name) "/web/team"
 
 -- backup api
   backupApi
@@ -97,6 +101,11 @@ redirectToError msg = redirect $ pack $ "/web/error/" ++ msg
 
 liftToActionM :: IO a -> ActionM a
 liftToActionM io = liftAndCatchIO io
+
+runAndRedirect :: IO() -> String -> ActionM()
+runAndRedirect io url = do
+                        liftToActionM io
+                        redirect $ pack url
 
 returnHtml :: IO Text -> ActionM()
 returnHtml ioV = do

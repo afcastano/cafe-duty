@@ -1,12 +1,13 @@
 module App.Roster.DomainService (
     validateTeam,
     createDefaultRoster,
+    skipMemberInRoster,
     validateTeamName,
     validatePersonName,
     tryAddPersonToTeam) where
 
 import App.Roster.RosterGeneration (generateInitialRoster, generateNextRoster)
-import App.Roster.Types (TeamRoster(..))
+import App.Roster.Types (TeamRoster(..), replaceInCurrent, replaceInNext, next)
 
 import App.TeamDetails.Types as Team (TeamDetails(..), Person(..), increaseTimesOnDuty, findPerson, addPersonToTeam)
 import App.Helper.Lists (rotate, transformElem)
@@ -17,6 +18,11 @@ createDefaultRoster team = let names         = map name $ members team
                                currentRoster = generateInitialRoster names ""
                                nextRoster    = generateNextRoster currentRoster
                            in TeamRoster (Team.teamName team) currentRoster nextRoster 0
+
+skipMemberInRoster :: TeamRoster -> String -> TeamRoster
+skipMemberInRoster roster memberName = let replacement   = snd $ next roster
+                                           partialRoster = replaceInCurrent roster memberName replacement
+                                       in  replaceInNext partialRoster replacement memberName
 
 -- TODO move to TeamDetails module
 validateTeam :: TeamDetails -> Either String TeamDetails

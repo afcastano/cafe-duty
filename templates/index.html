@@ -54,7 +54,8 @@
 
                     <h1><span class="kern-this">{{thisDuty.p1}}</span> <span class="kern-this" style="text-transform: none">and</span>
                         <span class="kern-this">{{thisDuty.p2}}</span></h1>
-                    <p>After that: <span style="color: white;">{{nxtDuty.p1}} and {{nxtDuty.p2}}</span></p>
+                    <p>(<a href="/skip-member/{{thisDuty.p1}}/team/{{name}}" style="color: white; font-size:14px;">Skip {{thisDuty.p1}}</a> | <a href="/skip-member/{{thisDuty.p2}}/team/{{name}}" style="color: white; font-size:14px;">Skip {{thisDuty.p2}}</a>)<br/>
+                        After that: <span style="color: white;">{{nxtDuty.p1}} and {{nxtDuty.p2}}</span></p>
                 </div> <!-- /twelve -->
             </div> <!-- /row -->
             <div class="row">

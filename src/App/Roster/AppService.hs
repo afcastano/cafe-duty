@@ -1,6 +1,6 @@
-module App.Roster.AppService (getTeamRoster, completeDuty, revertDuty) where
+module App.Roster.AppService (getTeamRoster, completeDuty, revertDuty, skipMember) where
 
-import App.Roster.DomainService (createDefaultRoster)
+import App.Roster.DomainService (createDefaultRoster, skipMemberInRoster)
 import App.Roster.Repository (findRoster, saveRoster)
 import App.Roster.Types as Roster (TeamRoster(..), increaseRosterIndex, decreaseRosterIndex, current)
 
@@ -16,7 +16,13 @@ getTeamRoster team = do
                     Nothing     -> return $ createDefaultRoster team
                     Just roster -> return roster
 
--- TODO not clear where this one goes
+skipMember :: TeamDetails -> String -> IO ()
+skipMember team memberName = do
+                roster <- getTeamRoster team
+                let newRoster = skipMemberInRoster roster memberName
+                saveRoster newRoster
+
+
 completeDuty :: String -> IO ()
 completeDuty tName = do
                 maybeTeam <- findTeam tName
