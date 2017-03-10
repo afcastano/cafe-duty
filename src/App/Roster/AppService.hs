@@ -1,8 +1,8 @@
-module App.Roster.AppService (getTeamRoster, completeDuty, revertDuty, skipMember) where
+module App.Roster.AppService (getTeamRoster, completeDuty, revertDuty, skipMember, findRosterAndAddPerson) where
 
 import App.Roster.DomainService (createDefaultRoster, skipMemberInRoster)
 import App.Roster.Repository (findRoster, saveRoster)
-import App.Roster.Types as Roster (TeamRoster(..), increaseRosterIndex, decreaseRosterIndex, current)
+import App.Roster.Types as Roster (TeamRoster(..), increaseRosterIndex, decreaseRosterIndex, current, addPersonToRoster)
 
 -- TODO Move to TeamDetails package
 import App.TeamDetails.Repository (findTeam, saveTeam)
@@ -36,6 +36,13 @@ revertDuty tName = do
                 case maybeTeam of
                     Nothing -> return ()
                     Just team -> calculatePreviousDuty team
+
+findRosterAndAddPerson :: String -> String -> IO ()
+findRosterAndAddPerson personName teamName = do
+                maybeRoster <- findRoster teamName
+                case maybeRoster of
+                    Nothing     -> return ()
+                    Just roster -> saveRoster (addPersonToRoster roster personName)
 
 ---- PRIVATE
 

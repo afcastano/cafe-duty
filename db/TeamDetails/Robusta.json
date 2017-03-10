@@ -4,47 +4,57 @@
         {
             "active": true,
             "name": "Andres",
-            "timesOnDuty": 0
+            "timesOnDuty": 6
         },
         {
             "active": true,
             "name": "Lars",
-            "timesOnDuty": 2
+            "timesOnDuty": 4
         },
         {
             "active": true,
             "name": "James",
-            "timesOnDuty": 0
+            "timesOnDuty": 6
         },
         {
             "active": true,
             "name": "Joe",
-            "timesOnDuty": 0
+            "timesOnDuty": 6
         },
         {
             "active": true,
             "name": "Dan",
-            "timesOnDuty": 0
+            "timesOnDuty": 6
         },
         {
             "active": true,
             "name": "Paul",
-            "timesOnDuty": 0
+            "timesOnDuty": 6
         },
         {
             "active": true,
             "name": "Vuthy",
-            "timesOnDuty": 0
+            "timesOnDuty": 6
         },
         {
             "active": true,
             "name": "Jeremy",
-            "timesOnDuty": 0
+            "timesOnDuty": 6
         },
         {
             "active": true,
             "name": "Zsofi",
-            "timesOnDuty": 0
+            "timesOnDuty": 10
+        },
+        {
+            "active": true,
+            "name": "April",
+            "timesOnDuty": 5
+        },
+        {
+            "active": true,
+            "name": "Other",
+            "timesOnDuty": 1
         }
     ]
 }

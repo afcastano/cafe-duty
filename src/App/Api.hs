@@ -5,7 +5,7 @@ import App.Pages.HomePageService (getHomePageText)
 import App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage)
 import App.Pages.ErrorPageService (getErrorPage)
 
-import App.Roster.AppService (getTeamRoster, completeDuty, revertDuty, skipMember)
+import App.Roster.AppService (getTeamRoster, completeDuty, revertDuty, skipMember, findRosterAndAddPerson)
 import App.Roster.Repository (deleteRoster)
 
 import App.TeamDetails.AppService (getValidTeam, createNewTeam, findTeamAndAddPerson)
@@ -60,7 +60,7 @@ webApi = do
     result     <- liftToActionM $ findTeamAndAddPerson personName teamName
     case result of
         Left msg -> redirectToError msg
-        Right _  -> redirect $ pack $ "/web/edit/team/" ++ teamName
+        Right _  -> runAndRedirect (findRosterAndAddPerson personName teamName) ("/web/edit/team/" ++ teamName)
 
   -- TODO change the next  gets to posts
   get "/complete-duty/:teamName" $ do

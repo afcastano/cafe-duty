@@ -4,27 +4,37 @@
         {
             "active": true,
             "name": "one",
-            "timesOnDuty": 2
+            "timesOnDuty": 16
         },
         {
             "active": true,
             "name": "two",
-            "timesOnDuty": 2
+            "timesOnDuty": 13
         },
         {
             "active": true,
             "name": "Three",
-            "timesOnDuty": 1
+            "timesOnDuty": 14
         },
         {
             "active": true,
             "name": "Four",
-            "timesOnDuty": 1
+            "timesOnDuty": 16
         },
         {
             "active": true,
             "name": "onessss",
-            "timesOnDuty": 0
+            "timesOnDuty": 9
+        },
+        {
+            "active": true,
+            "name": "new One =)",
+            "timesOnDuty": 6
+        },
+        {
+            "active": true,
+            "name": "newTwo",
+            "timesOnDuty": 4
         }
     ]
 }

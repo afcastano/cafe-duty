@@ -1,0 +1,32 @@
+{
+    "currentRoster": [
+        [
+            "One",
+            "Five"
+        ],
+        [
+            "",
+            "Four"
+        ],
+        [
+            "Three",
+            "Two"
+        ]
+    ],
+    "teamName": "Test2",
+    "nextRoster": [
+        [
+            "One",
+            ""
+        ],
+        [
+            "Three",
+            "Five"
+        ],
+        [
+            "Two",
+            "Four"
+        ]
+    ],
+    "pairIndex": 0
+}

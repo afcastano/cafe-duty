@@ -2,10 +2,18 @@
     "currentRoster": [
         [
             "one",
-            "two"
+            ""
+        ],
+        [
+            "onessss",
+            "newTwo"
         ],
         [
             "Four",
+            "new One =)"
+        ],
+        [
+            "two",
             "Three"
         ]
     ],
@@ -13,11 +21,19 @@
     "nextRoster": [
         [
             "one",
-            "Four"
+            "onessss"
+        ],
+        [
+            "Four",
+            ""
+        ],
+        [
+            "two",
+            "newTwo"
         ],
         [
             "Three",
-            "two"
+            "new One =)"
         ]
     ],
     "pairIndex": 1

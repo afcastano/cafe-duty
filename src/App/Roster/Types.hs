@@ -3,6 +3,7 @@ module App.Roster.Types (
             TeamRoster(..)
         ,   current
         ,   next
+        ,   addPersonToRoster
         ,   increaseRosterIndex
         ,   decreaseRosterIndex
         ,   replaceInCurrent
@@ -33,6 +34,16 @@ current :: TeamRoster -> (String, String)
 current roster = let pairs = safeCurrentRoster roster
                      idx   = pairIndex roster
                  in  pairs !! idx -- TODO dont use !!. It's risky.
+
+addPersonToRoster :: TeamRoster -> String -> TeamRoster
+addPersonToRoster roster personName = case findOddPair $ currentRoster roster of
+                                        Just oddPair -> let updatedPair   = replaceEmpty oddPair personName
+                                                            updatedRoster = updatePair oddPair updatedPair roster
+                                                            newNext       = generateNextRoster $ currentRoster updatedRoster
+                                                        in  updatedRoster {nextRoster = newNext}
+                                        Nothing      -> let newCurrent    = (currentRoster roster)++[(personName, "")]
+                                                            newNext       = generateNextRoster $ newCurrent
+                                                        in  roster {currentRoster = newCurrent, nextRoster = newNext}
 
 replaceInCurrent :: TeamRoster -> String -> String -> TeamRoster
 replaceInCurrent roster oldName newName
@@ -68,6 +79,11 @@ decreaseRosterIndex roster
         | (pairIndex roster) - 1 >= 0 = roster {pairIndex = (pairIndex roster) - 1}
         | otherwise                   = calculatePreviousRoster roster
 
+
+
+
+
+
 -- PRIVATE
 updatePair :: (String, String) -> (String, String) -> TeamRoster -> TeamRoster
 updatePair old new roster = let newCurrent = replaceElem old new (currentRoster roster)
@@ -99,6 +115,10 @@ filterOutEmpty :: [(String, String)] -> [(String, String)]
 filterOutEmpty list = let nonEmpty (s1, s2) = s1 /= "" && s2 /= ""
                       in filter nonEmpty list
 
+findOddPair :: [(String, String)] -> Maybe (String, String)
+findOddPair list = let oddPair (s1, s2) = s1 == "" || s2 == ""
+                   in find oddPair list
+
 -- Current roster with no empty tuples
 safeCurrentRoster :: TeamRoster -> [(String, String)]
 safeCurrentRoster roster = filterOutEmpty $ currentRoster roster
@@ -106,3 +126,8 @@ safeCurrentRoster roster = filterOutEmpty $ currentRoster roster
 safeNextRoster :: TeamRoster -> [(String, String)]
 safeNextRoster roster = filterOutEmpty $ nextRoster roster
 
+replaceEmpty :: (String, String) -> String -> (String, String)
+replaceEmpty pair pName
+            | "" == fst pair = (pName, snd pair)
+            | "" == snd pair = ((fst pair), pName)
+            | otherwise      = pair

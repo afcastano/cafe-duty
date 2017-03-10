@@ -1,0 +1,30 @@
+{
+    "teamName": "Test2",
+    "members": [
+        {
+            "active": true,
+            "name": "One",
+            "timesOnDuty": 3
+        },
+        {
+            "active": true,
+            "name": "Two",
+            "timesOnDuty": 3
+        },
+        {
+            "active": true,
+            "name": "Three",
+            "timesOnDuty": 2
+        },
+        {
+            "active": true,
+            "name": "Four",
+            "timesOnDuty": 3
+        },
+        {
+            "active": true,
+            "name": "Five",
+            "timesOnDuty": 1
+        }
+    ]
+}
