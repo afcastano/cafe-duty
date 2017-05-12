@@ -1,13 +1,13 @@
-#TODO
+# TODO
 
-###Functionality
+### Functionality
 - Disable people temporary
 - Add/Remove new people
 
-###UI
+### UI
 - Make people box bigger in duty UI
 
-###Refactors
+### Refactors
 - Find the difference between Domain Services and Types files.
 - Make code less imperative
 - Review architecture
@@ -15,6 +15,6 @@
 - Type alias to variables for better readability
 - WRITE TESTS!!!
 
-###Done
+### Done
 + Handle errors
 + Add link to create team in the home page
