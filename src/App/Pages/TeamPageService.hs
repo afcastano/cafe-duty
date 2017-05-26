@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage) where
+module App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage, getRobots) where
 
 import Text.Hastache
 import Text.Hastache.Context
@@ -14,6 +14,12 @@ getNewTeamPage :: IO Text
 getNewTeamPage = do
               let context "name" = MuVariable $ "Create" -- DUH????
               useTemplate "templates/new_team.html" context
+
+--- SHOULD NOT GO HERE
+getRobots :: IO Text
+getRobots = do
+              let context "name" = MuVariable $ "Create" -- DUH????
+              useTemplate "templates/robots.txt" context
 
 getCompleteDutyPage :: IO Text
 getCompleteDutyPage = do

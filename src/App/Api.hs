@@ -2,7 +2,7 @@
 module App.Api (webApi) where
 
 import App.Pages.HomePageService (getHomePageText)
-import App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage)
+import App.Pages.TeamPageService (getNewTeamPage, getEditTeamPage, getCompleteDutyPage, getTeamListPage, getRobots)
 import App.Pages.ErrorPageService (getErrorPage)
 
 import App.Roster.AppService (getTeamRoster, completeDuty, revertDuty, skipMember, findRosterAndAddPerson)
@@ -24,6 +24,9 @@ webApi = do
 -- Web pages api
   get "/" $ do
     redirect "/web/team"
+
+  get "/robots.txt" $ do
+    returnText $ getRobots
 
   get "/web/team" $ do
     returnHtml $ getTeamListPage =<< getTeamNames
@@ -111,3 +114,8 @@ returnHtml :: IO Text -> ActionM()
 returnHtml ioV = do
     val <- liftAndCatchIO ioV
     html val
+
+returnText :: IO Text -> ActionM()
+returnText ioV = do
+    val <- liftAndCatchIO ioV
+    text val
